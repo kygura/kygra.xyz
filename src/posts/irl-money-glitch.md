@@ -111,33 +111,16 @@ By moving the intellectual & productive capability of human beings unto these ma
 The nature of markets is such, that an excess of over-educated fellas and the automation of their over-educated work, will create a vacuum of demand for their services. 
 Traditional skills (which AI is not able to replace yet) have and will continue to reprice heavily. The moat provided by universities is eroding, and the value of a degree in these "office-aligned" roles is diminishing.
 
-The core problem with the american investment is that they are so concerned with being early, being the first to lead a revolution,  that they fail to see the predicament of such a  position. 
+The core problem with the american investment strategy is that they are so concerned with being early, being the first to lead a revolution,  that they fail to see the predicament of such a  position. 
 Being first to market, you are taking on extra risk that the next second-mover will not (here China). They can develop highly intelligent models, that the Chinese can then distill into a cheaper, open-source alternative, undermining their moat.
 All the while, few AI labs are running on a loss, with thin-to non-existing profit margins. The capital is not there to sustain this for long.
-
-The first are not usually the ones to benefit for long from the revolution they initiate.
-
+The first are not usually the ones to benefit from the revolution they initiate. In fact, it's highly likely that America will crack under the pressure of it's social and economic stress, while China accelerates past them in all other matters. Attempting to gain the lead in this regard will prove a futile gambit, when their competitors will close the gap 6 months after, without compromising their financial stability. 
+A shame for the Americans, but pride always precedes the fall.
 
 ## Fragmentation and Collapse
 
 The combination of these financial and technological forces creates a system primed for failure.
 
-### Systemic Risk
-
-Debt, perpetual speculation, and reliance on digital financial scaffolding create conditions for catastrophic failure. Social, technological, and economic overreach is inevitable if unchecked. Pride and perceived supremacy drive decisions more than caution or rational strategy. Beyond ideology, Trump lacks the sophistication required to combat this situation.
-
-This is a dangerous game. Anyone with eyes to see can recognize it. We're barreling toward a scenario where financial power, AI ambition and unpayable debt collide. A financial paradigm of artificial scarcity and orchestrated misery.
-
-### The Fragmentation of Capital in a Multipolar World
-
-Several critical questions remain unanswered:
-
-**How will Tether's liquidity be absorbed or co-opted** by a government-backed stablecoin without triggering a market collapse?
-
-**How will other global actors respond?** China and the EU won't stand idle while the U.S. attempts to cement monetary dominance through digital currency.
-
-**Internal political fractures** could sabotage the entire strategy. Treasury, Congress, the Fed, and tech lobbyists all have conflicting incentives.
-
-**AGI timelines and limitations** could shift the window for financial maneuvers. If we've already hit fundamental performance ceilings, the entire justification collapses.
-
-**Market psychology** is the wild card. Trust in perpetual debt and speculative AI ventures may collapse under stress events, creating crises earlier than expected.
+Debt, perpetual speculation, and reliance on digital financial scaffolding create conditions for catastrophic failure. Social, technological, and economic overreach is inevitable if unchecked. Pride and perceived supremacy drive decisions more than caution or rational strategy. 
+A secondary rolling bubble from the dotcom era has been brewing for some time. 
+All leading to a financial paradigm of artificial scarcity and orchestrated misery.
