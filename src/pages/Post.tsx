@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useMarkdownPost } from "../hooks/useMarkdownPosts";
 
-const WritingPost = () => {
+const Post = () => {
   const { slug } = useParams();
   const post = useMarkdownPost(slug);
 
@@ -21,7 +21,7 @@ const WritingPost = () => {
         to="/writings"
         className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors duration-300 mb-12"
       >
-        <ArrowLeft className="w-5 h-5" />
+      <ArrowLeft className="w-5 h-5" />
         Back to writings
       </Link>
 
@@ -61,4 +61,4 @@ const WritingPost = () => {
   );
 };
 
-export default WritingPost;
+export default Post;
