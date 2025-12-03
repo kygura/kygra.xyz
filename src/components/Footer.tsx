@@ -38,9 +38,7 @@ const Footer = () => {
     <span className="flex items-center gap-4 mt-12">
       <ArrowLeft 
         className={`w-6 h-6 transition-all duration-300 ${
-          prevQuote ? 'hover:translate-x-2 hover:cursor-pointer hover:scale-110' 
-          : 'opacity-50 cursor-not-allowed'
-        }`} 
+          prevQuote ? 'hover:translate-x-2 hover:cursor-pointer hover:scale-110' : 'opacity-50 cursor-not-allowed scale-75'}`} 
         onClick={handlePrevQuote}
       />
       
@@ -54,8 +52,7 @@ const Footer = () => {
 
       <ArrowRight 
         className={`w-6 h-6 transition-all duration-300 ${
-          nextQuote ? 'hover:-translate-x-2 hover:cursor-pointer hover:scale-110' : 'opacity-50 cursor-not-allowed'
-        }`} 
+          nextQuote ? 'hover:-translate-x-2 hover:cursor-pointer hover:scale-110' : 'opacity-50 cursor-not-allowed scale-75'}`} 
         onClick={handleNextQuote}
       />
       </span>
