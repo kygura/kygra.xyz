@@ -16,12 +16,12 @@ const Post = () => {
   }
 
   return (
-    <div className="px-6 md:px-12 lg:px-16 py-16 md:py-24 max-w-3xl animate-fade-in">
+    <div className="px-6 md:px-12 lg:px-16 py-16 md:py-24 max-w-3xl animate-fade-in ">
       <Link
         to="/writings"
         className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors duration-300 mb-12"
       >
-      <ArrowLeft className="w-5 h-5" />
+        <ArrowLeft className="w-5 h-5 hover:scale-110 hover:translate-x-1 " />
         Back to writings
       </Link>
 

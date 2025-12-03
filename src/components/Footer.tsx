@@ -1,20 +1,22 @@
-import { PHRASES } from '../lib/consts';
 import {ArrowLeft, ArrowRight} from 'lucide-react';
+import { QUOTES_ARRAY } from '../lib/consts';
 import { useState } from 'react';
 
-function getRandomQuote(list: string[]) {
-  let randomIndex = Math.floor(Math.random() * list.length);
 
-  return {quote: list[randomIndex], index: randomIndex}
+function setRandomQuote(list: string[]) {
+
+  let r = Math.floor(Math.random() * list.length);
+  return {index: r, content: list[r]}
+
 }
 
 const Footer = () => {
-  const phrase = getRandomQuote(PHRASES)
+  const initQuote = setRandomQuote(QUOTES_ARRAY)
 
-  const [quote, setQuote] = useState(phrase.quote);
+  const [quote, setQuote] = useState(initQuote.content);
 
-  const prevQuote = phrase.index > 0 ? PHRASES[phrase.index - 1] : null;
-  const nextQuote = phrase.index < PHRASES.length - 1 ? PHRASES[phrase.index + 1] : null;
+  const prevQuote = initQuote.index > 0 ? QUOTES_ARRAY[initQuote.index - 1] : null;
+  const nextQuote = initQuote.index < QUOTES_ARRAY.length - 1 ? QUOTES_ARRAY[initQuote.index + 1] : null;
 
   // Handler for setting the previous quote
   const handlePrevQuote = () => {
@@ -32,6 +34,7 @@ const Footer = () => {
 
   return (
     <footer className="w-full max-w-3xl mx-auto pt-4 pb-10 sm:pb-14 text-center border-t">
+
     <span className="flex items-center gap-4 mt-12">
       <ArrowLeft 
         className={`w-6 h-6 transition-all duration-300 ${
@@ -43,11 +46,12 @@ const Footer = () => {
       
       <div className="flex items-center justify-center w-full h-[72px] max-w-[500px] mx-auto text-lg">
       
-        <i className="inline-block text-center">
-          {quote.split("<br />")[0]} <br/>
-          {quote.split("<br />")[1]}
+        <i className="inline-block text-center select-none">
+          {quote.split("<br>")[0]}  <br/>
+          {quote.split("<br>")[1]}
         </i>
       </div>
+
       <ArrowRight 
         className={`w-6 h-6 transition-all duration-300 ${
           nextQuote ? 'hover:-translate-x-2 hover:cursor-pointer hover:scale-110' : 'opacity-50 cursor-not-allowed'
