@@ -31,11 +31,12 @@ const Footer = () => {
   };
 
   return (
-    <footer className="w-full max-w-3xl mx-auto pt-4 pb-10 sm:pb-14 text-center">
-    <span className="flex items-center gap-4">
+    <footer className="w-full max-w-3xl mx-auto pt-4 pb-10 sm:pb-14 text-center border-t">
+    <span className="flex items-center gap-4 pt-12">
       <ArrowLeft 
         className={`w-6 h-6 transition-all duration-300 ${
-          prevQuote ? 'hover:translate-x-1 hover:cursor-pointer hover:scale-110' : 'opacity-50 cursor-not-allowed'
+          prevQuote ? 'hover:translate-x-2 hover:cursor-pointer hover:scale-110' 
+          : 'opacity-50 cursor-not-allowed'
         }`} 
         onClick={handlePrevQuote}
       />
@@ -49,7 +50,7 @@ const Footer = () => {
       </div>
       <ArrowRight 
         className={`w-6 h-6 transition-all duration-300 ${
-          nextQuote ? 'hover:-translate-x-1 hover:cursor-pointer hover:scale-110' : 'opacity-50 cursor-not-allowed'
+          nextQuote ? 'hover:-translate-x-2 hover:cursor-pointer hover:scale-110' : 'opacity-50 cursor-not-allowed'
         }`} 
         onClick={handleNextQuote}
       />

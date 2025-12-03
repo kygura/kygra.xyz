@@ -1,5 +1,6 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { Sun, Moon } from "lucide-react"; // Importing Sun and Moon icons from lucide-react
 
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
@@ -30,13 +31,18 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={handleClick}
-      className={`relative w-10 h-10 rounded-full bg-foreground transition-all duration-300 hover:scale-110 ${
-        isAnimating ? 'animate-pulse' : ''
+      className={`relative w-10 h-10 rounded-full bg-foreground flex items-center justify-center transition-all duration-300 hover:scale-110 ${
+        isAnimating ? "animate-pulse" : ""
       }`}
       aria-label="Toggle theme"
     >
       {isAnimating && (
         <span className="absolute inset-0 rounded-full bg-foreground animate-ping opacity-75" />
+      )}
+      {isDark ? (
+        <Sun className="h-6 w-6 text-background opacity-100" />
+      ) : (
+        <Moon className="h-6 w-6 text-background opacity-100" />
       )}
     </button>
   );

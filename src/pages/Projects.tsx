@@ -23,13 +23,13 @@ const projects: Project[] = [
       "A decentralized social media platform that is censorship-resistant and privacy-focused.",
     techStack: ["NextJS", "gun.js", "IPFS"],
     githubUrl: "https://github.com/kygura/nyx",
-    liveUrl: "https://nyx.xyz",
+    liveUrl: "https://nyxusd.xyz",
   },
   {
     title: "AlphaFlow",
     description:
       "A visualization dashboard for visualizing market data at a glance.",
-    techStack: ["React", "hyperliquid-sdk", "Binance"],
+    techStack: ["React", "hyperliquid-sdk"],
     githubUrl: "https://github.com",
   },
 ];
@@ -37,9 +37,9 @@ const projects: Project[] = [
 const Projects = () => {
   return (
     <div className="px-6 md:px-12 lg:px-16 py-16 md:py-24 max-w-5xl animate-fade-in">
-      <h1 className="text-5xl md:text-6xl font-display font-light mb-4">Projects</h1>
+      <h1 className="text-5xl md:text-6xl font-display font-light mb-4">Software Projects</h1>
       <p className="text-lg text-muted-foreground mb-16">
-        A selection of things I've built and open-sourced.
+        A selection of things I've built and/or am currently working on.
       </p>
 
       <div className="space-y-16">
