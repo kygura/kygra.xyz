@@ -43,7 +43,7 @@ const CV = () => {
 
   return (
     <div className="px-6 md:px-12 lg:px-16 py-16 md:py-24 max-w-4xl animate-fade-in">
-      <div className="flex items-start justify-between mb-8">
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-8">
         <div>
           <h1 className="text-5xl md:text-6xl font-display font-light mb-4">
             Curriculum Vitae
@@ -54,7 +54,7 @@ const CV = () => {
         </div>
         <button
           onClick={downloadPDF}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-300 rounded-sm"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-300 rounded-sm mt-4 md:mt-0 self-start"
         >
           <Download className="w-4 h-4" />
           Download PDF

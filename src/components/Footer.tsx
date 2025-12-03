@@ -32,7 +32,7 @@ const Footer = () => {
 
   return (
     <footer className="w-full max-w-3xl mx-auto pt-4 pb-10 sm:pb-14 text-center border-t">
-    <span className="flex items-center gap-4 pt-12">
+    <span className="flex items-center gap-4 mt-12">
       <ArrowLeft 
         className={`w-6 h-6 transition-all duration-300 ${
           prevQuote ? 'hover:translate-x-2 hover:cursor-pointer hover:scale-110' 
@@ -44,7 +44,7 @@ const Footer = () => {
       <div className="flex items-center justify-center w-full h-[72px] max-w-[500px] mx-auto text-lg">
       
         <i className="inline-block text-center">
-          {quote.split("<br />")[0]} <br />
+          {quote.split("<br />")[0]} <br/>
           {quote.split("<br />")[1]}
         </i>
       </div>

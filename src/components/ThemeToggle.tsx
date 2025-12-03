@@ -40,9 +40,9 @@ const ThemeToggle = () => {
         <span className="absolute inset-0 rounded-full bg-foreground animate-ping opacity-75" />
       )}
       {isDark ? (
-        <Sun className="h-6 w-6 text-background opacity-100" />
+        <Sun className="h-6 w-6 text-background opacity-0" />
       ) : (
-        <Moon className="h-6 w-6 text-background opacity-100" />
+        <Moon className="h-6 w-6 text-background opacity-0" />
       )}
     </button>
   );
