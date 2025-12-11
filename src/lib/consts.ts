@@ -1,11 +1,10 @@
 
 
 export const QUOTES_ARRAY = [
-    "L'homme est condamné à être libre; parce qu'une fois jeté dans le monde, il est responsable de tout ce qu'il fait. <br>Man is condemned to be free; because once thrown into the world, he is responsible for everything he does.",
+    "Man is condemned to be free; because once thrown into the world, he is responsible for everything he does.",
     "Livet kan kun forstås baglæns; men det må leves forlæns. <br>Life can only be understood backwards; but it must be lived forwards.",
     "La liberté, c'est ce que vous faites de ce qui a été fait de vous.<br>Freedom is what you do with what's been done to you.",
-    "La seule façon de traiter un monde sans liberté est de devenir si absolument libre que votre existence même est un acte de rébellion. <br>The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion.",
-    "Ce qui est important, c'est de semer la confusion, pas de l'éliminer. <br>What is important is to spread confusion, not eliminate it.",
+    "The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion.",
     "Tu ne seras jamais heureux si tu continues à chercher en quoi consiste le bonheur. Tu ne vivras jamais si tu cherches le sens de la vie. <br>You will never be happy if you continue to search for what happiness consists of. You will never live if you are looking for the meaning of life.",
     "賢者の足跡をたどるな。賢者が目指したものを目指せ。<br>Do not seek to follow in the footsteps of the wise; seek what they sought.",
     "To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment.",
@@ -16,7 +15,7 @@ export const QUOTES_ARRAY = [
     "Ohne Musik wäre das Leben ein Irrtum. <br>Without music, life would be a mistake.",
     "Wer ein Warum zum Leben hat, erträgt fast jedes Wie. <br>He who has a why to live can bear almost any how.",
     "Zu leben ist Leiden, zu überleben ist, in dem Leiden einen Sinn zu finden. <br>To live is to suffer, to survive is to find meaning in the suffering.",
-    "Тайна человеческого существования заключается не только в том, чтобы жить, но и в том, чтобы найти то, ради чего стоит жить. <br>The mystery of human existence lies not in just staying alive, but in finding something to live for.",
+    "The mystery of human existence lies not in just staying alive, but in finding something to live for.",
     "Лучше идти своим путем ошибаясь, чем идти по чужому пути, но правильно. <br>It is better to go wrong in your own way than to go right in someone else's.",
     "Человек считает только свои беды; он не считает своего счастья. <br>Man only counts his troubles; he does not calculate his happiness.",
     "Der Mensch kann zwar tun, was er will, aber er kann nicht wollen, was er will. <br>Man can do what he wills, but he cannot will what he wills.",
@@ -30,7 +29,7 @@ export const QUOTES_ARRAY = [
     "Find what you love and let it kill you.",
     "What matters most is how well you walk through the fire.",
     "痛みは避けられないが、苦しみは選択である。<br>Pain is inevitable. Suffering is optional.",
-    "Die größten und wichtigsten Probleme des Lebens sind grundsätzlich unlösbar. Sie können niemals gelöst, sondern nur überwunden werden. <br>The greatest and most important problems of life are all fundamentally insoluble. They can never be solved but only outgrown.",
+    "Die größten und wichtigsten Probleme des Lebens sind grundsätzlich unlösbar. Sie können niemals gelöst, sondern nur überwunden werden.",
     "The loneliest moment in someone’s life is when they are watching their whole world fall apart, and all they can do is stare blankly.",
     "It is not society that is to guide and save the creative hero, but precisely the reverse.",
     "If you're going through hell, keep going.",
