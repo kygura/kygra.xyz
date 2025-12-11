@@ -1,8 +1,9 @@
-import { Download, MapPin, Mail, Globe, Github, Linkedin, Phone } from "lucide-react";
+import { Download, MapPin, Mail, Globe, 
+Github, Linkedin, Phone } from "lucide-react";
 
 const CV = () => {
 
-  const contactDetails = {
+  const contact = {
     location: "Malaga, Spain",
     phone: "+34 658 50 37 43",
     email: "ncerratoanton@gmail.com",
@@ -95,19 +96,19 @@ const CV = () => {
           </h1>
           <div className="text-lg text-muted-foreground space-y-2">
             <p className="flex items-center gap-2">
-              <MapPin className="w-4 h-4" /> {contactDetails.location}
+              <MapPin className="w-4 h-4" /> {contact.location}
             </p>
             <div className="flex flex-wrap gap-4 text-sm md:text-base">
-              <a href={`mailto:${contactDetails.email}`} className="flex items-center gap-2 hover:text-primary transition-colors">
-                <Mail className="w-4 h-4" /> {contactDetails.email}
+              <a href={`mailto:${contact.email}`} className="flex items-center gap-2 hover:text-primary transition-colors">
+                <Mail className="w-4 h-4" /> {contact.email}
               </a>
-              <a href={`https://${contactDetails.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
-                <Globe className="w-4 h-4" /> {contactDetails.website}
+              <a href={`https://${contact.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
+                <Globe className="w-4 h-4" /> {contact.website}
               </a>
-              <a href={`https://${contactDetails.github}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
+              <a href={`https://${contact.github}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
                 <Github className="w-4 h-4" /> github.com/kygura
               </a>
-              <a href={`https://${contactDetails.linkedin}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
+              <a href={`https://${contact.linkedin}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
                 <Linkedin className="w-4 h-4" /> linkedin.com/in/nca
               </a>
             </div>

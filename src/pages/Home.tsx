@@ -34,9 +34,9 @@ const Home = () => {
           </a>
         </div>
 
-        <p className="text-sm text-muted-foreground mt-16 italic">
-          <Footer />
-        </p>
+        <p className="text-sm text-muted-foreground mt-12 italic"></p>
+        <Footer />
+        
         
       </div>
     </div>;
