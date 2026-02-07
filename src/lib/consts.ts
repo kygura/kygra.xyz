@@ -30,13 +30,12 @@ export const QUOTES_ARRAY = [
     "Die größten und wichtigsten Probleme des Lebens sind grundsätzlich unlösbar. Sie können niemals gelöst, sondern nur überwunden werden.",
     "The loneliest moment in someone’s life is when they are watching their whole world fall apart, and all they can do is stare blankly.",
     "It is not society that is to guide and save the creative hero, but precisely the reverse.",
-    "If you're going through hell, keep going.",
+    "If you're going through hell, you must keep going.",
     "Zu leben ist Leiden, zu überleben ist, in dem Leiden einen Sinn zu finden. <br>To live is to suffer, to survive is to find meaning in the suffering.",
     "Angst ist der Schwindel der Freiheit. <br>Anxiety is the dizziness of freedom.",
     "ألم أن تكون إنسانًا هو الصراع الأبدي بين الروح وما يحيط بها.<br>The pain of being human is the eternal struggle between one's soul and one's surroundings.",
     "Life is a journey that must be traveled no matter how bad the roads and accommodations.",
     "狂った世界では、狂った人々だけが正気である。<br>In a mad world, only the mad are sane.",
-    "The blood of the heroes is closer to God than the ink of the philosophers and the prayers of the faithful",
 
     // Added below
     "Existence precedes essence.",

@@ -1,6 +1,10 @@
 ---
 title: On the Wasted Life
 description: "The dissolution of man in the modern world"
+date: "2024-03-15"
+type: "Essay"
+category: "Philosophy"
+tags: ["philosophy", "modernity"]
 ---
 
 To observe the behaviors and attitudes of the average person today is to witness a strange spectacle. The majority do not live up to the full measure of their potential. More devastating still, their current trajectory offers no promise that they will achieve the zenith of human experience before their final breath.

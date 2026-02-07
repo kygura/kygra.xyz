@@ -6,6 +6,8 @@ const Navigation = () => {
     { path: "/", label: "Home" },
     { path: "/writings", label: "Writings" },
     { path: "/projects", label: "Software" },
+    { path: "/artifacts", label: "Artifacts" },
+    { path: "/guestbook", label: "Guestbook" },
     { path: "/cv", label: "CV" },
   ];
 
@@ -18,10 +20,11 @@ const Navigation = () => {
               <NavLink
                 to={item.path}
                 end={item.path === "/"}
-                className="nav-link text-muted-foreground"
+                className="nav-link text-muted-foreground relative group transition-colors duration-300 hover:text-primary no-underline"
                 activeClassName="active text-foreground"
               >
                 {item.label}
+                <span className="absolute left-0 bottom-0 w-full h-[2px] bg-gradient-to-r from-primary/80 to-primary origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100" />
               </NavLink>
             </li>
           ))}

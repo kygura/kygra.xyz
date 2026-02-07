@@ -5,9 +5,10 @@ export interface Post {
   title: string;
   excerpt: string;
   date: string;
-  readTime: string;
+  category: string;
   tags: string[];
   content: string;
+  readTime: number;
 }
 
 // Simple frontmatter parser (browser-compatible)
@@ -70,11 +71,12 @@ export const useMarkdownPosts = () => {
       parsedPosts.push({
         slug: filename,
         title: data.title || "",
-        excerpt: data.excerpt || "",
-        date: data.date || "",
-        readTime: data.readTime || "",
+        excerpt: data.description || data.excerpt || "", // Fallback to description if excerpt missing
+        date: data.date || "2023-01-01",
+        category: data.category || "General",
         tags: data.tags || [],
         content: markdownContent,
+        readTime: data.readTime || 10,
       });
     }
 

@@ -1,4 +1,4 @@
-import {ArrowLeft, ArrowRight} from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { QUOTES_ARRAY } from '../lib/consts';
 import { useState } from 'react';
 
@@ -14,8 +14,10 @@ const Footer = () => {
     setCurrentQuote(prev => {
       if (prev.index > 0) {
         const newIndex = prev.index - 1;
-        return { index: newIndex, 
-        content: QUOTES_ARRAY[newIndex] };
+        return {
+          index: newIndex,
+          content: QUOTES_ARRAY[newIndex]
+        };
       }
       return prev;
     });
@@ -24,10 +26,12 @@ const Footer = () => {
   const handleNext = () => {
     setCurrentQuote(next => {
 
-      if (next.index < QUOTES_ARRAY.length-1) {
+      if (next.index < QUOTES_ARRAY.length - 1) {
         const newIndex = next.index + 1;
-        return { index: newIndex,
-        content: QUOTES_ARRAY[newIndex] };
+        return {
+          index: newIndex,
+          content: QUOTES_ARRAY[newIndex]
+        };
       }
       return next;
     });
@@ -38,28 +42,34 @@ const Footer = () => {
   const quote = currentQuote.content.split("<br>");
 
   return (
-    <footer className="w-full max-w-3xl mx-auto pt-4 pb-10 sm:pb-14 text-center">
-      <span className="flex items-center justify-center py-12 pt-18  border-t border-b border-gray-300">
-        <ArrowLeft 
-          className={`w-6 h-6 transition-all duration-300 ${
-            hasPrev ? 'hover:translate-x-2 hover:cursor-pointer hover:scale-110' : 'opacity-50 cursor-not-allowed scale-75'}`} 
+    <footer className="w-full max-w-3xl mx-auto pb-12 sm:pb-20 text-center px-6">
+      <div className="w-full h-px bg-border/40 my-12 mx-auto max-w-[200px]" />
+
+      <div className="flex items-center justify-center gap-6 sm:gap-8 mb-12">
+        <ArrowLeft
+          className={`w-5 h-5 text-muted-foreground transition-all duration-300 ${hasPrev ? 'hover:text-primary hover:-translate-x-1 cursor-pointer' : 'opacity-30 cursor-not-allowed'}`}
           onClick={handlePrev}
         />
-        
-        <div className="flex items-center justify-center w-full h-[72px] max-w-[500px] mx-auto text-lg">
-          <i className="inline-block text-center select-none">
-            {quote[0]}
-            {<br />}
-            {quote[1]}
-          </i>
+
+        <div className="min-h-[60px] flex items-center justify-center max-w-[450px]">
+          <p className="font-display italic text-lg sm:text-xl text-muted-foreground/80 leading-relaxed">
+            {quote.map((line, i) => (
+              <span key={i} className="block">
+                {line}
+              </span>
+            ))}
+          </p>
         </div>
 
-        <ArrowRight 
-          className={`w-6 h-6 transition-all duration-300 ${
-            hasNext ? 'hover:-translate-x-2 hover:cursor-pointer hover:scale-110' : 'opacity-50 cursor-not-allowed scale-75'}`} 
+        <ArrowRight
+          className={`w-5 h-5 text-muted-foreground transition-all duration-300 ${hasNext ? 'hover:text-primary hover:translate-x-1 cursor-pointer' : 'opacity-30 cursor-not-allowed'}`}
           onClick={handleNext}
         />
-      </span>
+      </div>
+
+{/*       <p className="text-sm text-muted-foreground/60 font-light">
+        &copy; {new Date().getFullYear()} kygra.xyz
+      </p> */}
     </footer>
   );
 };

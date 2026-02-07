@@ -1,44 +1,50 @@
-import { Github, Mail } from "lucide-react";
-import Footer from "../components/Footer";
+import { TypewriterEffect } from "../components/ui/typewriter-effect";
 
 const Home = () => {
-  return <div className="px-6 md:px-12 lg:px-16 py-16 md:py-24 max-w-4xl">
-      <div className="prose-minimal animate-fade-in">
-        <h1 className="text-6xl md:text-7xl lg:text-8xl font-display font-light mb-8">
-          Nicolas C.A.
-        </h1>
-        
-        <p className="text-xl md:text-2xl font-light italic mb-12 text-muted-foreground">
-          Software Engineer
+  return <div className="px-6 md:px-12 lg:px-16 py-16 md:pt-24 pb-0 max-w-4xl mx-auto text-center">
+    <div className="prose-minimal animate-fade-in mx-auto">
+      <h1 className="text-6xl md:text-7xl lg:text-8xl font-display font-light mb-8 h-[1.2em]">
+        <TypewriterEffect text="Welcome friend" typingDelay={70}
+          deletingDelay={30} cursor={true} cursorCharacter="_" />
+      </h1>
+
+      <p className="text-xl md:text-2xl font-light italic mb-12 text-muted-foreground min-h-[1.5em]">
+        <TypewriterEffect
+          text={[
+            "I am known as kygra.",
+            "I am a ghost in the machine.",
+            "I build digital artifacts.",
+            "I seek the signal and kill the noise.",
+          ]}
+          typingDelay={100}
+          deletingDelay={50}
+          delay={2000}
+          cursor={true}
+          cursorCharacter="|"
+          startDelay={1600}
+          smartBackspace={true}
+          loop={true}
+        />
+      </p>
+
+      <div className="space-y-6 text-lg leading-relaxed">
+        <p>
+          I am a man out of time, witnessing the world as it was and as it is. I am happily unemployed, refusing to trade my best years for a salary that supports a wasteful existence.
+        </p>
+        <p>
+          I sustain myself by the land and the markets, answering only to necessity. I work for myself and the betterment of others, finding freedom in having few costs and no master.
+        </p>
+        <p>
+          I view technology with skepticism and suspicion. It is a good servant but a terrible master; embedding itself into the fabric of our civilization and souls, I'm betting it will grow to become a force of opression against our freedoms.
         </p>
 
-        <div className="space-y-6 text-lg leading-relaxed">
-          <p>
-          Welcome. I'm a software developer by trade with a passion for distilling the complexity of the world into elegant solutions. 
-          My work has been mostly aimed at the intersection of finance and tech, building programmable wealth in post-AGI world.
-          </p>
 
-          <p className="text-muted-foreground">
-          Currently developing zkNull, a zero-knowledge private infrastructure on Ethereum. 
-          <br/>Also working on the first technical drafts for on-chains AI agents, capable of performing autonomous financial operations on behalf of people.
-          </p>
-        </div>
-
-        <div className="flex gap-6 mt-12">
-          <a href="https://github.com/kygura" target="_blank" rel="noopener noreferrer" className="text-foreground hover:text-muted-foreground transition-colors duration-300 hover:scale-110 hover:rotate-3" aria-label="GitHub">
-            <Github className="w-6 h-6" />
-          </a>
-
-          <a href="mailto:ncerratoanton@gmail.com" className="text-foreground hover:text-muted-foreground transition-colors duration-300 hover:scale-110 hover:rotate-3" aria-label="Email">
-            <Mail className="w-6 h-6" />
-          </a>
-        </div>
-
-        <p className="text-sm text-muted-foreground mt-12 italic"></p>
-        <Footer />
-        
-        
       </div>
-    </div>;
+
+      <p className="text-sm text-muted-foreground mt-12 italic"></p>
+
+
+    </div>
+  </div>;
 };
 export default Home;

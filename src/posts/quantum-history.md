@@ -3,6 +3,9 @@ title: "Quantum History"
 tags: ["philosophy", "history"]
 published: true
 description: "The life not lived."
+date: "2024-02-28"
+type: "Essay"
+category: "History"
 ---
 
 > A history unknown. An experience not lived. The path unwalked. 

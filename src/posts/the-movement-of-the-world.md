@@ -2,6 +2,9 @@
 title: "On the movements of the world"
 tags: ["philosophy", "history"]
 published: true
+date: "2023-12-05"
+type: "Essay"
+category: "Geopolitics"
 ---
 
 ## The Thread of History
@@ -49,7 +52,7 @@ For something like a life purpose can hardly be set in stone. It must be ever-ch
 
 ### The Lost Dream
 
-It's clear how the idealist among us and within ourselves fell short in ambitions of liberating humanity. A grand endeavour, bound to fail, but of profound importance to those who lost much in its pursuit, and had little left to lose. They dreamt of a world where one could pursue higher callings, meaningful labor, explore places of beauty, establish connections based on a shared understanding of the beauty that permeates all.
+It's clear how the idealist among us and within ourselves fell short in ambitions of liberating humanity. A grand endeavour, bound to fail, but of profound importance to those who lost much in its pursuit, and had little left to lose. They dreamt of a world where one could pursue higher callings, meaningful labor, explore places of beauty, establish connections with your fellow men
 
 How many great people and ideas of profound wonder have been lost to history? On the surface, they sacrificed everything for very little in return. The dreams of a man are usually shaped by the times and world they are born in. So I'll tell you a bit about these times, about what moves the people of the times, and why so many chose to sacrifice the warranted present for a future that may never arrive.
 
@@ -59,4 +62,4 @@ As a consequence, technology has been rejected by many—its intended reason for
 
 On the contrary, whatever given activity a man decides to pursue in his life will never be fully representative of that man's essential purpose. Whether they bring us fulfillment. Whether decided on a whim. We tend to confuse ambitions or cultural wounds on the psyche with a life purpose. And with mercantile operations ruling this world, we have grown complacent of what used to be so deeply desired for so long.
 
-Yet one pursues freedom still. Not as a grand ideology, but as an immaterial unit of lived experience. With it, the world becomes a playground to engage with—to pursue higher callings, meaningful labor, to explore places of beauty, to establish connections based on a shared understanding of the beauty that permeates all. This remains the dream worth pursuing, even if it is bound to fail. Perhaps because it is bound to fail.
+Yet one pursues freedom still. Not as a grand ideology, but as an immaterial unit of lived experience. With it, the world becomes a playground to engage with—to pursue higher callings, meaningful labor, to explore places of beauty, to establish connections with your fellow men This remains the dream worth pursuing, even if it is bound to fail. Perhaps because it is bound to fail.

@@ -10,16 +10,23 @@ import Post from "./pages/Post";
 import Projects from "./pages/Projects";
 import CV from "./pages/CV";
 import NotFound from "./pages/NotFound";
+import Guestbook from "./pages/Guestbook";
+import Artifacts from "./pages/Artifacts";
+import { SoundtrackPlayer } from "./components/SoundtrackPlayer";
+
+import { Terminal } from "./components/Terminal";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-  
+
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <SoundtrackPlayer />
+        <Terminal />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route
@@ -39,6 +46,14 @@ const App = () => (
             }
           />
           <Route
+            path="/artifacts"
+            element={
+              <Layout>
+                <Artifacts />
+              </Layout>
+            }
+          />
+          <Route
             path="/projects"
             element={
               <Layout>
@@ -51,6 +66,14 @@ const App = () => (
             element={
               <Layout>
                 <CV />
+              </Layout>
+            }
+          />
+          <Route
+            path="/guestbook"
+            element={
+              <Layout>
+                <Guestbook />
               </Layout>
             }
           />

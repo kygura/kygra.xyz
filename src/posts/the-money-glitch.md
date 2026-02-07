@@ -2,6 +2,9 @@
 title: "The Infinite Money Glitch"
 description: "An analysis of the U.S. government's strategy to leverage stablecoins and AI in the face of unsustainable debt and global competition."
 tags: ["politics", "ai", "finance"]
+date: "2024-01-10"
+type: "Analysis"
+category: "Finance"
 ---
 
 ## A Desperate Gambit

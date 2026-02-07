@@ -1,5 +1,7 @@
-import { Download, MapPin, Mail, Globe, 
-Github, Linkedin, Phone } from "lucide-react";
+import {
+  Download, MapPin, Mail, Globe,
+  Github, Linkedin, Phone
+} from "lucide-react";
 
 const CV = () => {
 
@@ -12,7 +14,7 @@ const CV = () => {
     linkedin: "linkedin.com/in/nca"
   };
 
-  const summary = "Software Engineer with a strong foundation in Computer Science and international academic background (Spain/Germany). Specialized in Backend development, Blockchain technologies (Solidity), and AI integration. Proven track record of building autonomous trading systems and fine-tuning LLMs. Trilingual professional (English, German, Spanish).";
+  const summary = "Software Engineer with a strong foundation in Computer Science and international academic background (Spain/Germany). Specialized in Web Development, Backend development, Blockchain technologies (Solidity), and AI integration. Proven track record of building autonomous trading systems and fine-tuning LLMs. Trilingual professional (English, German, Spanish).";
 
   const education = [
     {
@@ -54,10 +56,10 @@ const CV = () => {
       ]
     },
     {
-      title: "Personal Portfolio & Web Apps",
-      tech: "Next.js, Tailwind CSS",
+      title: "Multiple Web Applications",
+      tech: "Varying across projects",
       points: [
-        "Developed multiple web3 & blockchain infrastructure & frontend application tackling modern problems.",
+        "Developed multiple web & applications tackling friction in the software and finance world.",
         "Implemented modern UI/UX principles and optimized frontend performance."
       ]
     }
@@ -116,7 +118,7 @@ const CV = () => {
         </div>
         <button
           onClick={downloadPDF}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-300 rounded-sm mt-4 md:mt-0 self-start shrink-0"
+          className="cv-download-btn mt-4 md:mt-0 self-start shrink-0"
         >
           <Download className="w-4 h-4" />
           Download PDF

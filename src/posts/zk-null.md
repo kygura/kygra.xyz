@@ -3,12 +3,14 @@ title: "The zkNull Project"
 description: "Why I built a privacy primitive in an age of total financial surveillance, and why the transparency of public blockchains is a bug, not a feature."
 tags: ["cryptography"]
 published: true
+date: "2023-11-20"
+type: "Technical Guide"
+category: "Cryptography"
 ---
 
 ## The Panopticon on the Blockchain
 
-Truth is, I'm a bit disappointed with the current state of affairs in the crypto space. 
-The early eth adopters & cryptophunks promised that a public ledger was the ultimate tool for accountability, a way to keep the powerful in check.
+The early cryptophunks had this vision of a public ledger being the ultimate tool for accountability, a way to decentivize corruption and punish malicious participants.
 In practice, the "immutable public ledger" has morphed into the most sophisticated surveillance apparatus ever constructed.
 
 Every transaction you make is etched permanently into history. Your salary, your donations, your good & bad trades, your medical payments. It's all there, waiting to be scraped by Chainalysis and Arkham Intelligence to be sold to government agencies.
@@ -175,4 +177,3 @@ Future enhancements include:
 *   **Stealth Addresses**: One-time addresses for each withdrawal to prevent address reuse tracking
 *   **Cross-Chain Bridges**: Deposit on one chain, withdraw on another, breaking cross-chain analysis
 
-I am building the tools for the new world. A world where you own your data, your money, and your history. The old world is watching. Let's give them nothing to see.
