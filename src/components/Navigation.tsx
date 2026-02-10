@@ -8,6 +8,7 @@ const Navigation = () => {
     { path: "/projects", label: "Software" },
     { path: "/artifacts", label: "Artifacts" },
     { path: "/guestbook", label: "Guestbook" },
+    ...(import.meta.env.VITE_SHOW_CV === "true" ? [{ path: "/cv", label: "CV" }] : []),
   ];
 
   return (

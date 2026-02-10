@@ -1,7 +1,7 @@
 import { TypewriterEffect } from "../components/ui/typewriter-effect";
 
 const Home = () => {
-  return <div className="px-6 md:px-12 lg:px-16 py-16 md:pt-24 pb-0 max-w-4xl mx-auto text-center">
+  return <div className="px-6 mb-12 my-2 md:px-12 lg:px-16 py-16 md:pt-12 pb-0 max-w-4xl mx-auto text-center">
     <div className="prose-minimal animate-fade-in mx-auto">
       <h1 className="text-6xl md:text-7xl lg:text-8xl font-display font-light mb-8 h-[1.2em]">
         <TypewriterEffect text="Welcome friend" typingDelay={70}
@@ -38,11 +38,7 @@ const Home = () => {
           I view technology with skepticism and suspicion. It is a good servant but a terrible master; embedding itself into the fabric of our civilization and souls, I'm betting it will grow to become a force of opression against our freedoms.
         </p>
 
-
       </div>
-
-      <p className="text-sm text-muted-foreground mt-12 italic"></p>
-
 
     </div>
   </div>;

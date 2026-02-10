@@ -12,6 +12,7 @@ import Projects from "./pages/Projects";
 import NotFound from "./pages/NotFound";
 import Guestbook from "./pages/Guestbook";
 import Artifacts from "./pages/Artifacts";
+import CV from "./pages/CV";
 import { SoundtrackPlayer } from "./components/SoundtrackPlayer";
 
 import { Terminal } from "./components/Terminal";
@@ -70,6 +71,16 @@ const App = () => (
               </Layout>
             }
           />
+          {import.meta.env.VITE_SHOW_CV === "true" && (
+            <Route
+              path="/cv"
+              element={
+                <Layout>
+                  <CV />
+                </Layout>
+              }
+            />
+          )}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -25,6 +25,10 @@ interface ThemeColors {
   warning: string;
   info: string;
   accent: string;
+  scrollbarThumb: string;
+  scrollbarTrack: string;
+  hasTexture?: boolean;
+  hasReflection?: boolean;
 }
 
 const themes: Record<TerminalTheme, ThemeColors> = {
@@ -32,50 +36,69 @@ const themes: Record<TerminalTheme, ThemeColors> = {
     bg: "bg-[#1a1b26]/95",
     bgOverlay: "bg-black/40",
     header: "bg-[#16161e]",
-    border: "border-[#414868]",
-    text: "text-[#c0caf5]",
-    textMuted: "text-[#565f89]",
-    prompt: "text-[#9ece6a]",
-    path: "text-[#7dcfff]",
-    command: "text-[#c0caf5]",
-    success: "text-[#9ece6a]",
-    error: "text-[#f7768e]",
-    warning: "text-[#e0af68]",
-    info: "text-[#7dcfff]",
-    accent: "text-[#bb9af7]",
+    border: "border-[#545cd8]",
+    text: "text-[#d5def5]",
+    textMuted: "text-[#656f99]",
+    prompt: "text-[#73daca]",
+    path: "text-[#2ac3de]",
+    command: "text-[#e0e8ff]",
+    success: "text-[#3dd68c]",
+    error: "text-[#ff5370]",
+    warning: "text-[#ffcb6b]",
+    info: "text-[#82aaff]",
+    accent: "text-[#c792ea]",
+    scrollbarThumb: "bg-[#414868]",
+    scrollbarTrack: "bg-transparent",
   },
   catppuccin: {
     bg: "bg-[#1e1e2e]/95",
     bgOverlay: "bg-black/30",
     header: "bg-[#181825]",
-    border: "border-[#45475a]",
-    text: "text-[#cdd6f4]",
-    textMuted: "text-[#6c7086]",
-    prompt: "text-[#a6e3a1]",
-    path: "text-[#89dceb]",
-    command: "text-[#cdd6f4]",
-    success: "text-[#a6e3a1]",
-    error: "text-[#f38ba8]",
-    warning: "text-[#f9e2af]",
-    info: "text-[#89b4fa]",
-    accent: "text-[#cba6f7]",
+    border: "border-[#5865f2]",
+    text: "text-[#e5eeff]",
+    textMuted: "text-[#7c8096]",
+    prompt: "text-[#31f7b6]",
+    path: "text-[#00d9ff]",
+    command: "text-[#e5eeff]",
+    success: "text-[#40eb9c]",
+    error: "text-[#ff5c8d]",
+    warning: "text-[#ffe066]",
+    info: "text-[#5b9dff]",
+    accent: "text-[#dc8eff]",
+    scrollbarThumb: "bg-[#45475a]",
+    scrollbarTrack: "bg-transparent",
   },
   minimal: {
-    bg: "bg-card/60",
-    bgOverlay: "bg-background/10",
-    header: "bg-muted/30",
-    border: "border-primary/10",
-    text: "text-foreground/90",
-    textMuted: "text-muted-foreground/60",
-    prompt: "text-primary",
-    path: "text-primary/70",
-    command: "text-foreground",
-    success: "text-primary",
-    error: "text-destructive",
-    warning: "text-primary/80",
-    info: "text-primary/60",
-    accent: "text-primary/90",
+    bg: "bg-white/[0.02] backdrop-blur-2xl saturate-150 border-white/10 shadow-2xl",
+    bgOverlay: "bg-black/40 backdrop-blur-[2px]",
+    header: "bg-transparent border-white/5",
+    border: "border-white/10",
+    text: "text-foreground drop-shadow-md",
+    textMuted: "text-muted-foreground/80",
+    prompt: "text-primary drop-shadow-[0_0_15px_hsl(var(--primary)/0.6)]",
+    path: "text-cyan-400 drop-shadow-[0_0_12px_rgba(34,211,238,0.5)]",
+    command: "text-foreground font-medium",
+    success: "text-emerald-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.5)]",
+    error: "text-rose-400 drop-shadow-[0_0_15px_rgba(251,113,133,0.5)]",
+    warning: "text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]",
+    info: "text-sky-400 drop-shadow-[0_0_12px_rgba(56,189,248,0.5)]",
+    accent: "text-primary drop-shadow-[0_0_15px_hsl(var(--primary)/0.7)]",
+    scrollbarThumb: "bg-white/10 hover:bg-white/20 transition-colors",
+    scrollbarTrack: "bg-transparent",
+    hasTexture: true,
+    hasReflection: true,
   },
+};
+
+// Convert Tailwind bg- class to CSS color value for scrollbar
+const getScrollbarColor = (bgClass: string): string => {
+  // Extract color from Tailwind class (e.g., "bg-[#414868]" -> "#414868")
+  const hexMatch = bgClass.match(/bg-\[(.+?)\]/);
+  if (hexMatch) return hexMatch[1];
+
+  // For Tailwind utility classes like bg-primary/30, return a fallback
+  if (bgClass.includes("primary")) return "hsl(var(--primary) / 0.3)";
+  return "rgba(128, 128, 128, 0.3)";
 };
 
 export const Terminal = () => {
@@ -382,71 +405,121 @@ export const Terminal = () => {
   if (!isOpen) return null;
 
   return (
-    <div
-      className={`fixed inset-0 ${themes[theme].bgOverlay} z-50 flex items-center justify-center backdrop-blur-sm`}
-      onClick={() => setIsOpen(false)}
-    >
+    <>
+      {/* Dynamic Scrollbar Styles */}
+      <style>
+        {`
+          .terminal-scrollbar::-webkit-scrollbar {
+            width: 8px;
+          }
+          .terminal-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+          }
+          .terminal-scrollbar::-webkit-scrollbar-thumb {
+            background: ${getScrollbarColor(themes[theme].scrollbarThumb)};
+            border-radius: 4px;
+          }
+          .terminal-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: ${getScrollbarColor(themes[theme].scrollbarThumb).replace(/0\.\d+\)/, "0.5)")};
+          }
+        `}
+      </style>
       <div
-        className={`w-full max-w-2xl h-96 ${themes[theme].bg} border ${themes[theme].border} rounded-lg shadow-2xl flex flex-col font-mono text-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200`}
-        onClick={(e) => e.stopPropagation()}
+        className={`fixed inset-0 ${themes[theme].bgOverlay} z-50 flex items-center justify-center backdrop-blur-sm`}
+        onClick={() => setIsOpen(false)}
       >
-        {/* Header */}
-        <div className={`h-8 ${themes[theme].header} border-b ${themes[theme].border} flex items-center justify-between px-3 select-none`}>
-          <div className={`flex items-center gap-2 ${themes[theme].info}`}>
-            <TerminalIcon size={14} />
-            <span className="text-xs">guest@kygra.xyz:~</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setIsOpen(false)}
-              className={`${themes[theme].textMuted} hover:${themes[theme].text} transition-colors`}
-            >
-              <Minus size={14} />
-            </button>
-            <button
-              onClick={() => setIsOpen(false)}
-              className={`${themes[theme].textMuted} hover:${themes[theme].error} transition-colors`}
-            >
-              <X size={14} />
-            </button>
-          </div>
-        </div>
-
-        {/* Content */}
         <div
-          className={`flex-1 p-4 overflow-y-auto ${themes[theme].text} scrollbar-thin scrollbar-thumb-[#414868] scrollbar-track-transparent`}
-          onClick={() => inputRef.current?.focus()}
+          className={`relative w-full max-w-2xl h-96 ${themes[theme].bg} border ${themes[theme].border} rounded-lg shadow-2xl flex flex-col font-mono text-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200`}
+          onClick={(e) => e.stopPropagation()}
         >
-          {history.map((item, i) => (
-            <div key={i} className="mb-1 whitespace-pre-wrap break-words">
-              {item.type === "command" ? (
-                <div className={`flex gap-2 ${themes[theme].command}`}>
-                  <span className={themes[theme].prompt}>➜</span>
-                  <span className={themes[theme].path}>~</span>
-                  <span className="font-bold">{item.content}</span>
-                </div>
-              ) : (
-                <div className="ml-6">{item.content}</div>
-              )}
-            </div>
-          ))}
-
-          <div className={`flex gap-2 items-center ${themes[theme].command} mt-1`}>
-            <span className={themes[theme].prompt}>➜</span>
-            <span className={themes[theme].path}>~</span>
-            <input
-              ref={inputRef}
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className={`flex-1 bg-transparent border-none outline-none ${themes[theme].command} placeholder-${themes[theme].textMuted}`}
-              autoFocus
+          {/* Texture Overlay - Almanac Sketch Effect */}
+          {themes[theme].hasTexture && (
+            <div
+              className="absolute inset-0 pointer-events-none opacity-[0.07] mix-blend-overlay rounded-lg z-0"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                backgroundRepeat: "repeat",
+              }}
             />
+          )}
+          {/* Glass Reflection & Lighting Effects */}
+          {themes[theme].hasReflection && (
+            <div className="absolute inset-0 pointer-events-none rounded-lg z-10 overflow-hidden">
+              {/* Top Shine Gradient */}
+              <div className="absolute top-0 left-0 right-0 h-[40%] bg-gradient-to-b from-white/[0.12] to-transparent" />
+
+              {/* Diagonal Sheen */}
+              <div className="absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-gradient-to-br from-transparent via-white/[0.03] to-transparent rotate-12" />
+
+              {/* Inner Glow/Shadow */}
+              <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(255,255,255,0.05)] rounded-lg" />
+
+              {/* Top Edge Highlight */}
+              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/[0.4] to-transparent" />
+            </div>
+          )}
+          {/* Header */}
+          <div className={`h-8 ${themes[theme].header} border-b ${themes[theme].border} flex items-center justify-between px-3 select-none`}>
+            <div className={`flex items-center gap-2 ${themes[theme].info}`}>
+              <TerminalIcon size={14} />
+              <span className="text-xs">guest@kygra.xyz:~</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setIsOpen(false)}
+                className={`${themes[theme].textMuted} hover:${themes[theme].text} transition-colors`}
+              >
+                <Minus size={14} />
+              </button>
+              <button
+                onClick={() => setIsOpen(false)}
+                className={`${themes[theme].textMuted} hover:${themes[theme].error} transition-colors`}
+              >
+                <X size={14} />
+              </button>
+            </div>
           </div>
-          <div ref={bottomRef} />
+
+          {/* Content */}
+          <div
+            className={`flex-1 p-4 overflow-y-auto ${themes[theme].text} terminal-scrollbar`}
+            style={{
+              scrollbarWidth: "thin",
+              scrollbarColor: `${getScrollbarColor(themes[theme].scrollbarThumb)} transparent`,
+            } as React.CSSProperties & { scrollbarColor?: string }}
+            onClick={() => inputRef.current?.focus()}
+          >
+            {history.map((item, i) => (
+              <div key={i} className="mb-1 whitespace-pre-wrap break-words">
+                {item.type === "command" ? (
+                  <div className={`flex gap-2 ${themes[theme].command}`}>
+                    <span className={themes[theme].prompt}>➜</span>
+                    <span className={themes[theme].path}>~</span>
+                    <span className="font-bold">{item.content}</span>
+                  </div>
+                ) : (
+                  <div className="ml-6">{item.content}</div>
+                )}
+              </div>
+            ))}
+
+            <div className={`flex gap-2 items-center ${themes[theme].command} mt-1`}>
+              <span className={themes[theme].prompt}>➜</span>
+              <span className={themes[theme].path}>~</span>
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className={`flex-1 bg-transparent border-none outline-none ${themes[theme].command} placeholder-${themes[theme].textMuted}`}
+                autoFocus
+              />
+            </div>
+            <div ref={bottomRef} />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
