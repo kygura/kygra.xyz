@@ -1,11 +1,7 @@
-
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,900;1,900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 /* Definition of the design system. 
 All colors, gradients, fonts, etc should be defined here. 
@@ -14,54 +10,56 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 44 50% 91%; 
-    --foreground: 240 5% 15%;
+    --blood-red: 5 100% 40%; /* #cc1100 */
+    --blood-ink: 20 13% 5%;  /* #0e0c0b */
+    --blood-off-white: 40 23% 91%; /* #f0ece4 */
+    --blood-white: 40 26% 95%; /* #f7f4ef */
 
-    --card: 44 45% 96%;
-    --card-foreground: 240 5% 15%;
+    --background: var(--blood-red); 
+    --foreground: var(--blood-ink);
 
-    --popover: 44 45% 96%;
-    --popover-foreground: 240 5% 15%;
+    --card: var(--blood-off-white);
+    --card-foreground: var(--blood-ink);
 
-    /* Muted Sage */
-    --primary: 140 25% 40%;
-    --primary-foreground: 60 5% 97%;
+    --popover: var(--blood-off-white);
+    --popover-foreground: var(--blood-ink);
 
-    /* Soft Mist */
-    --secondary: 140 10% 94%;
-    --secondary-foreground: 240 5% 20%;
+    --primary: var(--blood-ink);
+    --primary-foreground: var(--blood-white);
 
-    --muted: 140 10% 94%;
-    --muted-foreground: 240 4% 46%;
+    --secondary: var(--blood-white);
+    --secondary-foreground: var(--blood-ink);
 
-    /* Vibrant but subtle accent */
-    --accent: 140 20% 92%;
-    --accent-foreground: 140 30% 25%;
+    --muted: var(--blood-white);
+    --muted-foreground: 20 13% 40%; /* faded ink */
+
+    --accent: var(--blood-ink);
+    --accent-foreground: var(--blood-white);
 
     --destructive: 0 60% 55%;
     --destructive-foreground: 60 5% 97%;
 
-    --border: 240 5% 85%;
-    --input: 240 5% 85%;
-    --ring: 140 25% 40%;
+    --border: 20 13% 85%; /* light ink border */
+    --input: 20 13% 85%;
+    --ring: var(--blood-ink);
 
-    --radius: 0.75rem;
+    --radius: 0rem; /* Brutalist, no rounded corners */
 
     /* Typography scale */
-    --font-display: 'Crimson Pro', serif;
-    --font-body: 'Inter', sans-serif;
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Courier Prime', monospace;
 
     /* Spacing scale */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.15s ease; /* Snappier for this theme */
 
-    --sidebar-background: 60 5% 98%;
-    --sidebar-foreground: 240 5% 20%;
-    --sidebar-primary: 140 25% 40%;
-    --sidebar-primary-foreground: 60 5% 97%;
-    --sidebar-accent: 140 15% 90%;
-    --sidebar-accent-foreground: 240 5% 20%;
-    --sidebar-border: 240 5% 85%;
-    --sidebar-ring: 140 25% 40%;
+    --sidebar-background: var(--blood-red);
+    --sidebar-foreground: var(--blood-ink);
+    --sidebar-primary: var(--blood-ink);
+    --sidebar-primary-foreground: var(--blood-white);
+    --sidebar-accent: var(--blood-off-white);
+    --sidebar-accent-foreground: var(--blood-ink);
+    --sidebar-border: 20 13% 85%;
+    --sidebar-ring: var(--blood-ink);
 
     --chart-1: 140 30% 45%;
     --chart-2: 25 30% 50%;
@@ -69,11 +67,11 @@ All colors MUST be HSL.
     --chart-4: 280 20% 50%;
     --chart-5: 340 30% 50%;
 
-    --sidebar: 60 5% 98%;
+    --sidebar: var(--blood-red);
 
-    --font-sans: 'Work Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
-    --font-serif: 'Lora', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-    --font-mono: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    --font-sans: 'Courier Prime', monospace;
+    --font-serif: 'Playfair Display', serif;
+    --font-mono: 'Courier Prime', monospace;
 
     --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
     --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
@@ -90,37 +88,34 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Soft Charcoal Dark Mode */
-    --background: 240 5% 12%; 
-    --foreground: 60 5% 98%; 
+    /* Inverted Blood Theme */
+    --background: var(--blood-ink); 
+    --foreground: var(--blood-white); 
 
-    --card: 240 5% 15%;
-    --card-foreground: 60 5% 98%;
+    --card: 20 13% 10%; /* slightly lighter ink */
+    --card-foreground: var(--blood-white);
 
-    --popover: 240 5% 15%;
-    --popover-foreground: 60 5% 98%;
+    --popover: 20 13% 10%;
+    --popover-foreground: var(--blood-white);
 
-    /* Muted Mint/Sage */
-    --primary: 140 30% 50%;
-    --primary-foreground: 240 5% 5%;
+    --primary: var(--blood-red);
+    --primary-foreground: var(--blood-ink);
 
-    /* Dark soft slate */
-    --secondary: 240 6% 18%;
-    --secondary-foreground: 60 5% 98%;
+    --secondary: 20 13% 15%;
+    --secondary-foreground: var(--blood-white);
 
-    --muted: 240 6% 18%;
-    --muted-foreground: 240 5% 65%;
+    --muted: 20 13% 15%;
+    --muted-foreground: 40 23% 60%; /* faded white */
 
-    /* Subtle glow */
-    --accent: 140 20% 20%;
-    --accent-foreground: 140 40% 60%;
+    --accent: var(--blood-red);
+    --accent-foreground: var(--blood-ink);
 
     --destructive: 0 50% 40%;
     --destructive-foreground: 60 5% 98%;
 
-    --border: 240 5% 20%;
-    --input: 240 5% 20%;
-    --ring: 140 30% 50%;
+    --border: 20 13% 20%; /* dark border */
+    --input: 20 13% 20%;
+    --ring: var(--blood-red);
 
     --chart-1: 140 40% 50%;
     --chart-2: 25 40% 55%;
@@ -128,14 +123,14 @@ All colors MUST be HSL.
     --chart-4: 280 30% 55%;
     --chart-5: 340 40% 50%;
 
-    --sidebar: 240 5% 14%;
-    --sidebar-foreground: 60 5% 98%;
-    --sidebar-primary: 140 30% 50%;
-    --sidebar-primary-foreground: 240 5% 5%;
-    --sidebar-accent: 240 4% 20%;
-    --sidebar-accent-foreground: 60 5% 98%;
-    --sidebar-border: 240 5% 20%;
-    --sidebar-ring: 140 30% 50%;
+    --sidebar: var(--blood-ink);
+    --sidebar-foreground: var(--blood-white);
+    --sidebar-primary: var(--blood-red);
+    --sidebar-primary-foreground: var(--blood-ink);
+    --sidebar-accent: 20 13% 15%;
+    --sidebar-accent-foreground: var(--blood-white);
+    --sidebar-border: 20 13% 20%;
+    --sidebar-ring: var(--blood-red);
     
     --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
     --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);

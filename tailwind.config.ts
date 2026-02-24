@@ -15,44 +15,23 @@ export default {
   	extend: {
   		fontFamily: {
   			display: [
-  				'Crimson Pro',
+  				'Playfair Display',
   				'serif'
   			],
   			body: [
-  				'Inter',
-  				'sans-serif'
+  				'Courier Prime',
+  				'monospace'
   			],
   			sans: [
-  				'Work Sans',
-  				'ui-sans-serif',
-  				'system-ui',
-  				'-apple-system',
-  				'BlinkMacSystemFont',
-  				'Segoe UI',
-  				'Roboto',
-  				'Helvetica Neue',
-  				'Arial',
-  				'Noto Sans',
-  				'sans-serif'
+  				'Courier Prime',
+  				'monospace'
   			],
   			serif: [
-  				'Lora',
-  				'ui-serif',
-  				'Georgia',
-  				'Cambria',
-  				'Times New Roman',
-  				'Times',
+  				'Playfair Display',
   				'serif'
   			],
   			mono: [
-  				'Inconsolata',
-  				'ui-monospace',
-  				'SFMono-Regular',
-  				'Menlo',
-  				'Monaco',
-  				'Consolas',
-  				'Liberation Mono',
-  				'Courier New',
+  				'Courier Prime',
   				'monospace'
   			]
   		},
