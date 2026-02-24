@@ -20,22 +20,22 @@ const Post = () => {
   }
 
   return (
-    <div className="px-6 md:px-12 lg:px-16 py-16 md:py-24 max-w-3xl mx-auto animate-fade-in ">
-      <Link
-        to="/writings"
-        className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors duration-300 mb-12"
-      >
-        <ArrowLeft className="w-5 h-5 hover:scale-110 hover:translate-x-1 " />
-        Back to writings
-      </Link>
+    <div className="px-6 md:px-12 lg:px-16 py-16 md:py-24 max-w-3xl mx-auto animate-fade-in font-['Courier_Prime']">
+      <div className="mb-12 pb-6 border-b-[4px] border-foreground relative">
+        <Link
+          to="/writings"
+          className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors duration-300 mb-8 mt-2"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          BACK TO WRITINGS
+        </Link>
 
-      <article className="prose-minimal">
-        <h1 className="text-2xl md:text-5xl font-display font-light mb-6">
+        <h1 className="text-4xl md:text-6xl font-['Bebas_Neue'] tracking-widest text-foreground uppercase leading-[0.9] mb-8">
           {post.title}
         </h1>
 
         {(post.date || post.readTime) && (
-          <div className="flex items-center gap-6 text-sm text-muted-foreground mb-12">
+          <div className="flex items-center gap-6 text-xs font-bold uppercase tracking-widest text-muted-foreground">
             {post.date && (
               <span className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
@@ -54,126 +54,126 @@ const Post = () => {
             )}
           </div>
         )}
+      </div>
 
-        <div className="prose-minimal">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            components={{
-              pre({ children }: any) {
-                // Return a fragment or unstyled div to avoid double styling by prose-minimal pre
-                return <div className="not-prose my-6">{children}</div>;
-              },
-              code({ node, inline, className, children, ...props }: any) {
-                const match = /language-(\w+)/.exec(className || '')
+      <article className="prose-minimal text-lg leading-relaxed text-foreground">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            pre({ children }: any) {
+              // Return a fragment or unstyled div to avoid double styling by prose-minimal pre
+              return <div className="not-prose my-6">{children}</div>;
+            },
+            code({ node, inline, className, children, ...props }: any) {
+              const match = /language-(\w+)/.exec(className || '')
 
-                if (!inline) {
-                  return (
-                    <CodeBlock
-                      language={match ? match[1] : undefined}
-                      value={String(children).replace(/\n$/, '')}
-                      className={className}
-                      {...props}
-                    />
-                  )
-                }
-
+              if (!inline) {
                 return (
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
-                )
-              },
-              img({ node, ...props }: any) {
-                return (
-                  <PostImage
+                  <CodeBlock
+                    language={match ? match[1] : undefined}
+                    value={String(children).replace(/\n$/, '')}
+                    className={className}
                     {...props}
-                    className="w-full h-auto rounded-lg shadow-md"
                   />
-                );
-              },
-              blockquote({ children, ...props }: any) {
-                // Helper to recursively extract text content from React nodes
-                const extractText = (node: any): string => {
-                  if (!node) return "";
-                  if (typeof node === "string") return node;
-                  if (Array.isArray(node)) return node.map(extractText).join("");
-                  if (node.props && node.props.children) return extractText(node.props.children);
-                  return "";
-                };
+                )
+              }
 
-                const childrenArray = React.Children.toArray(children);
+              return (
+                <code className={className} {...props}>
+                  {children}
+                </code>
+              )
+            },
+            img({ node, ...props }: any) {
+              return (
+                <PostImage
+                  {...props}
+                  className="w-full h-auto rounded-lg shadow-md"
+                />
+              );
+            },
+            blockquote({ children, ...props }: any) {
+              // Helper to recursively extract text content from React nodes
+              const extractText = (node: any): string => {
+                if (!node) return "";
+                if (typeof node === "string") return node;
+                if (Array.isArray(node)) return node.map(extractText).join("");
+                if (node.props && node.props.children) return extractText(node.props.children);
+                return "";
+              };
 
-                // Find the first meaningful child (ignore whitespace strings)
-                const firstContentIndex = childrenArray.findIndex(child => {
-                  if (typeof child === 'string') return child.trim().length > 0;
-                  return true; // Elements are content
-                });
+              const childrenArray = React.Children.toArray(children);
 
-                if (firstContentIndex !== -1) {
-                  const contentChild = childrenArray[firstContentIndex];
-                  const textContent = extractText(contentChild);
+              // Find the first meaningful child (ignore whitespace strings)
+              const firstContentIndex = childrenArray.findIndex(child => {
+                if (typeof child === 'string') return child.trim().length > 0;
+                return true; // Elements are content
+              });
 
-                  if (textContent) {
-                    // Relaxed regex to handle potential leading whitespace or newlines
-                    const match = textContent.match(/^\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/);
-                    if (match) {
-                      const type = match[1] as any;
-                      const pattern = /^\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/;
+              if (firstContentIndex !== -1) {
+                const contentChild = childrenArray[firstContentIndex];
+                const textContent = extractText(contentChild);
 
-                      const processChildren = (nodes: React.ReactNode): React.ReactNode => {
-                        let found = false;
-                        return React.Children.map(nodes, (child) => {
-                          if (found) return child;
+                if (textContent) {
+                  // Relaxed regex to handle potential leading whitespace or newlines
+                  const match = textContent.match(/^\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/);
+                  if (match) {
+                    const type = match[1] as any;
+                    const pattern = /^\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/;
 
-                          if (typeof child === 'string') {
-                            if (child.match(pattern)) {
-                              found = true;
-                              return child.replace(pattern, '');
-                            }
-                            return child;
-                          }
+                    const processChildren = (nodes: React.ReactNode): React.ReactNode => {
+                      let found = false;
+                      return React.Children.map(nodes, (child) => {
+                        if (found) return child;
 
-                          if (React.isValidElement(child) && (child.props as any).children) {
-                            const processed = processChildren((child.props as any).children);
-                            return React.cloneElement(child, {}, processed);
+                        if (typeof child === 'string') {
+                          if (child.match(pattern)) {
+                            found = true;
+                            return child.replace(pattern, '');
                           }
                           return child;
-                        });
-                      };
+                        }
 
-                      // Transform the specific child that contains the trigger
-                      const newContentChild = React.isValidElement(contentChild)
-                        ? React.cloneElement(contentChild as React.ReactElement, {}, processChildren(contentChild.props.children))
-                        : (typeof contentChild === 'string' ? contentChild.replace(pattern, '') : contentChild);
+                        if (React.isValidElement(child) && (child.props as any).children) {
+                          const processed = processChildren((child.props as any).children);
+                          return React.cloneElement(child, {}, processed);
+                        }
+                        return child;
+                      });
+                    };
 
-                      /* 
-                         Reconstruct children: 
-                         0..firstContentIndex-1 (whitespace)
-                         newContentChild (stripped trigger)
-                         firstContentIndex+1..end (rest)
-                      */
-                      const newChildren = [
-                        ...childrenArray.slice(0, firstContentIndex),
-                        newContentChild,
-                        ...childrenArray.slice(firstContentIndex + 1)
-                      ];
+                    // Transform the specific child that contains the trigger
+                    const newContentChild = React.isValidElement(contentChild)
+                      ? React.cloneElement(contentChild as React.ReactElement, {}, processChildren(contentChild.props.children))
+                      : (typeof contentChild === 'string' ? contentChild.replace(pattern, '') : contentChild);
 
-                      return (
-                        <Alert type={type}>
-                          {newChildren}
-                        </Alert>
-                      );
-                    }
+                    /* 
+                       Reconstruct children: 
+                       0..firstContentIndex-1 (whitespace)
+                       newContentChild (stripped trigger)
+                       firstContentIndex+1..end (rest)
+                    */
+                    const newChildren = [
+                      ...childrenArray.slice(0, firstContentIndex),
+                      newContentChild,
+                      ...childrenArray.slice(firstContentIndex + 1)
+                    ];
+
+                    return (
+                      <Alert type={type}>
+                        {newChildren}
+                      </Alert>
+                    );
                   }
                 }
-
-                return <blockquote {...props}>{children}</blockquote>;
               }
-            }}
-          >
-            {post.content}
-          </ReactMarkdown>
-        </div>
+
+              return <blockquote {...props}>{children}</blockquote>;
+            }
+          }}
+        >
+          {post.content}
+        </ReactMarkdown>
       </article>
     </div>
   );

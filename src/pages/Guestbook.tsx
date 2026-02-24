@@ -4,10 +4,11 @@ import { GuestbookEntry } from "@/components/GuestbookEntry";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { AutosizeTextarea } from "@/components/ui/autosize-textarea";
 import { useToast } from "@/hooks/use-toast";
-import Footer from "@/components/Footer";
 import { Loader2, SendHorizontal, ArrowDown } from "lucide-react";
+
+
 
 interface Entry {
   id: string;
@@ -17,6 +18,7 @@ interface Entry {
 }
 
 const PAGE_SIZE = 12;
+const MAX_CHARS = 280;
 
 const Guestbook = () => {
   const [entries, setEntries] = useState<Entry[]>([]);
@@ -152,7 +154,7 @@ const Guestbook = () => {
         </h1>
 
         <p className="text-lg font-light text-muted-foreground mb-8">
-          Leave a mark, say hello, or just let me know you were here.
+          Leave a mark brother, say hello, or just let me know you were here.
         </p>
 
         <Card className="mb-12 border-muted bg-card/40 shadow-sm">
@@ -165,13 +167,20 @@ const Guestbook = () => {
                   onChange={(e) => setName(e.target.value)}
                   className="bg-background/50 border-muted w-1/3"
                 />
-                <Textarea
-                  placeholder="Leave a message..."
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  style={{ height: '2.5rem', minHeight: '2.5rem' }}
-                  className="flex-1 bg-background/50 border-muted resize-y"
-                />
+                <div className="relative flex-1">
+                  <AutosizeTextarea
+                    placeholder="Leave a message..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    maxLength={MAX_CHARS}
+                    minRows={1}
+                    maxRows={8}
+                    className="w-full bg-background/50 border-muted pr-12 resize-none"
+                  />
+                  <span className="absolute bottom-2 right-3 text-[10px] text-muted-foreground pointer-events-none select-none">
+                    {message.length}/{MAX_CHARS}
+                  </span>
+                </div>
                 <Button
                   type="submit"
                   disabled={submitting || cooldown || !message.trim()}

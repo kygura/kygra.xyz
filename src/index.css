@@ -1,150 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Special+Elite&family=Bebas+Neue&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=UnifrakturMaguntia&display=swap");
 
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
-/* Definition of the design system. 
-All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 44 50% 91%; 
-    --foreground: 240 5% 15%;
+    /* KYGRA ZINE COLORS */
+    --paper: 40 32% 86%;   /* #e8e0d0 */
+    --ink: 24 23% 8%;      /* #1a1410 */
+    --red: 6 63% 46%;      /* #c0392b */
+    --yellow: 44 85% 60%;  /* #f0c040 */
+    --blue: 218 48% 33%;   /* #2c4a7c */
+    --muted: 30 14% 48%;   /* #8a7a6a */
+    --white: 37 32% 94%;   /* #f5f0e8 */
 
-    --card: 44 45% 96%;
-    --card-foreground: 240 5% 15%;
+    /* Tailwind Mappings */
+    --background: var(--paper);
+    --foreground: var(--ink);
 
-    --popover: 44 45% 96%;
-    --popover-foreground: 240 5% 15%;
+    --card: var(--paper);
+    --card-foreground: var(--ink);
 
-    /* Muted Sage */
-    --primary: 140 25% 40%;
-    --primary-foreground: 60 5% 97%;
+    --popover: var(--paper);
+    --popover-foreground: var(--ink);
 
-    /* Soft Mist */
-    --secondary: 140 10% 94%;
-    --secondary-foreground: 240 5% 20%;
+    --primary: var(--ink);
+    --primary-foreground: var(--paper);
 
-    --muted: 140 10% 94%;
-    --muted-foreground: 240 4% 46%;
+    --secondary: var(--red);
+    --secondary-foreground: var(--paper);
 
-    /* Vibrant but subtle accent */
-    --accent: 140 20% 92%;
-    --accent-foreground: 140 30% 25%;
+    --destructive: var(--red);
+    --destructive-foreground: var(--paper);
 
-    --destructive: 0 60% 55%;
-    --destructive-foreground: 60 5% 97%;
-
-    --border: 240 5% 85%;
-    --input: 240 5% 85%;
-    --ring: 140 25% 40%;
-
-    --radius: 0.75rem;
-
-    /* Typography scale */
-    --font-display: 'Crimson Pro', serif;
-    --font-body: 'Inter', sans-serif;
-
-    /* Spacing scale */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    --sidebar-background: 60 5% 98%;
-    --sidebar-foreground: 240 5% 20%;
-    --sidebar-primary: 140 25% 40%;
-    --sidebar-primary-foreground: 60 5% 97%;
-    --sidebar-accent: 140 15% 90%;
-    --sidebar-accent-foreground: 240 5% 20%;
-    --sidebar-border: 240 5% 85%;
-    --sidebar-ring: 140 25% 40%;
-
-    --chart-1: 140 30% 45%;
-    --chart-2: 25 30% 50%;
-    --chart-3: 200 30% 45%;
-    --chart-4: 280 20% 50%;
-    --chart-5: 340 30% 50%;
-
-    --sidebar: 60 5% 98%;
-
-    --font-sans: 'Work Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
-    --font-serif: 'Lora', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-    --font-mono: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-
-    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
-    --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
-    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
-    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-
-    --tracking-normal: 0em;
-
-    --spacing: 0.25rem;
+    --border: var(--ink);
+    --input: var(--ink);
+    --ring: var(--red);
+    
+    --radius: 0rem;
+    
+    --sidebar-background: var(--paper);
+    --sidebar-foreground: var(--ink);
+    --sidebar-border: var(--ink);
   }
 
   .dark {
-    /* Soft Charcoal Dark Mode */
-    --background: 240 5% 12%; 
-    --foreground: 60 5% 98%; 
-
-    --card: 240 5% 15%;
-    --card-foreground: 60 5% 98%;
-
-    --popover: 240 5% 15%;
-    --popover-foreground: 60 5% 98%;
-
-    /* Muted Mint/Sage */
-    --primary: 140 30% 50%;
-    --primary-foreground: 240 5% 5%;
-
-    /* Dark soft slate */
-    --secondary: 240 6% 18%;
-    --secondary-foreground: 60 5% 98%;
-
-    --muted: 240 6% 18%;
-    --muted-foreground: 240 5% 65%;
-
-    /* Subtle glow */
-    --accent: 140 20% 20%;
-    --accent-foreground: 140 40% 60%;
-
-    --destructive: 0 50% 40%;
-    --destructive-foreground: 60 5% 98%;
-
-    --border: 240 5% 20%;
-    --input: 240 5% 20%;
-    --ring: 140 30% 50%;
-
-    --chart-1: 140 40% 50%;
-    --chart-2: 25 40% 55%;
-    --chart-3: 200 40% 50%;
-    --chart-4: 280 30% 55%;
-    --chart-5: 340 40% 50%;
-
-    --sidebar: 240 5% 14%;
-    --sidebar-foreground: 60 5% 98%;
-    --sidebar-primary: 140 30% 50%;
-    --sidebar-primary-foreground: 240 5% 5%;
-    --sidebar-accent: 240 4% 20%;
-    --sidebar-accent-foreground: 60 5% 98%;
-    --sidebar-border: 240 5% 20%;
-    --sidebar-ring: 140 30% 50%;
-    
-    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
-    --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
-    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
-    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+    /* Retain the exact zine aesthetic even in dark mode requests */
+    --paper: 24 23% 8%;
+    --ink: 40 32% 86%;
+    --background: var(--paper);
+    --foreground: var(--ink);
+    --card: var(--paper);
+    --card-foreground: var(--ink);
+    --popover: var(--paper);
+    --popover-foreground: var(--ink);
+    --primary: var(--ink);
+    --primary-foreground: var(--paper);
+    --secondary: var(--red);
+    --secondary-foreground: var(--paper);
+    --destructive: var(--red);
+    --destructive-foreground: var(--paper);
+    --border: var(--ink);
+    --input: var(--ink);
+    --ring: var(--red);
+    --sidebar-background: var(--paper);
+    --sidebar-foreground: var(--ink);
+    --sidebar-border: var(--ink);
   }
 }
 
@@ -154,11 +76,26 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground font-body antialiased;
+    background: hsl(var(--paper));
+    color: hsl(var(--ink));
+    font-family: 'Courier Prime', monospace;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-light;
+    @apply font-normal;
+    font-family: 'Bebas Neue', sans-serif;
   }
 
   ::selection {
@@ -168,127 +105,124 @@ All colors MUST be HSL.
 }
 
 @layer utilities {
+  .smear {
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, hsl(var(--ink)) 15%, hsl(var(--ink)) 85%, transparent 100%);
+    opacity: 0.3;
+    margin: 0;
+    border: none;
+  }
+  .smear.thick {
+    height: 8px;
+    opacity: 0.15;
+  }
 
+  .tape-strip {
+    position: absolute;
+    background: rgba(240,192,64,0.55);
+    padding: 2px 12px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    pointer-events: none;
+    z-index: 10;
+  }
 
+  .stamp {
+    display: inline-block;
+    border: 2.5px solid hsl(var(--red));
+    color: hsl(var(--red));
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    padding: 0.25rem 0.6rem;
+    opacity: 0.85;
+  }
+
+  .crosshatch-box {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 4px,
+      rgba(26,20,16,0.08) 4px,
+      rgba(26,20,16,0.08) 5px
+    );
+    pointer-events: none;
+  }
+
+  .torn-top {
+    width: 100%;
+    height: 20px;
+    background: hsl(var(--paper));
+    clip-path: polygon(0% 100%, 2% 30%, 5% 80%, 8% 20%, 12% 70%, 15% 15%, 18% 60%, 22% 10%, 25% 65%, 28% 25%, 32% 75%, 35% 20%, 38% 55%, 42% 5%, 46% 70%, 50% 30%, 54% 85%, 58% 15%, 62% 60%, 65% 20%, 68% 75%, 72% 10%, 75% 65%, 78% 25%, 82% 70%, 85% 15%, 88% 55%, 92% 5%, 95% 65%, 98% 30%, 100% 80%, 100% 100%);
+    margin-top: -1px;
+  }
+
+  /* markdown prose */
   .prose-minimal {
-    @apply max-w-none;
+    @apply max-w-none text-foreground;
   }
-
   .prose-minimal h1 {
-    @apply text-3xl md:text-4xl lg:text-5xl font-light mb-6;
+    @apply text-4xl md:text-5xl lg:text-6xl mb-6 uppercase tracking-wider;
+    font-family: 'Bebas Neue', sans-serif;
   }
-
   .prose-minimal h2 {
-    @apply text-2xl md:text-3xl font-light mb-4 mt-12;
+    @apply text-3xl md:text-4xl mb-4 mt-12 uppercase tracking-wide;
+    font-family: 'Bebas Neue', sans-serif;
   }
-
   .prose-minimal h3 {
-    @apply text-xl md:text-2xl font-light mb-4 mt-8;
+    @apply text-2xl md:text-3xl mb-4 mt-8 uppercase;
+    font-family: 'Bebas Neue', sans-serif;
   }
-
-  .prose-minimal h4 {
-    @apply text-xl md:text-2xl font-light mb-4 mt-8;
-  }
-
-  .prose-minimal h5 {
-    @apply text-lg md:text-xl font-light mb-3 mt-6;
-  }
-
-  .prose-minimal h6 {
-    @apply text-base md:text-lg font-light mb-3 mt-6;
-  }
-  
   .prose-minimal p {
-    @apply text-lg leading-relaxed mb-6 text-muted-foreground/90;
+    @apply text-base leading-relaxed mb-6 text-foreground;
   }
-
   .prose-minimal ul {
     @apply mb-6 ml-6 list-none;
   }
-
   .prose-minimal ul li {
-    @apply relative pl-2 mb-2 text-lg leading-relaxed text-muted-foreground/90;
+    @apply relative pl-4 mb-2 text-base leading-relaxed;
   }
-
   .prose-minimal ul li::before {
-    @apply content-[''] absolute left-[-1rem] top-[0.6rem] w-1.5 h-1.5 rounded-full bg-primary/60;
+    @apply content-['>'] absolute left-0 top-0 font-bold opacity-50;
   }
-
   .prose-minimal ol {
-    @apply mb-6 ml-6 list-decimal marker:text-primary/60 marker:font-medium;
+    @apply mb-6 ml-6 list-decimal marker:font-bold;
   }
-
   .prose-minimal ol li {
-    @apply mb-2 pl-2 text-lg leading-relaxed text-muted-foreground/90;
+    @apply mb-2 pl-2 text-base leading-relaxed;
   }
-
   .prose-minimal blockquote {
-    @apply relative border-l-4 border-primary/30 pl-6 py-2 italic my-8 text-muted-foreground bg-secondary/10 rounded-r-lg;
+    @apply relative border-l-4 border-foreground pl-6 py-2 my-8;
+    font-family: 'Special Elite', cursive;
+    color: hsl(var(--blue));
+    border-color: hsl(var(--blue));
+    font-size: 1.1rem;
+    background: transparent;
   }
-
-  /* Target inline code only in specific contexts to avoid hitting code blocks */
   .prose-minimal p code,
-  .prose-minimal li code,
-  .prose-minimal blockquote code,
-  .prose-minimal th code,
-  .prose-minimal td code {
-    @apply bg-secondary/50 px-1.5 py-0.5 rounded text-sm font-mono text-foreground border border-border/50;
+  .prose-minimal li code {
+    @apply bg-foreground/10 px-1.5 py-0.5 font-mono text-sm border border-foreground/30;
   }
-
   .prose-minimal pre {
-    @apply bg-[#1e1e1e] border border-border/50 rounded-lg p-0 overflow-x-auto mb-8 shadow-sm;
+    @apply bg-foreground text-background border-none rounded-none p-4 overflow-x-auto mb-8 shadow-none;
   }
-
   .prose-minimal pre code {
-    @apply bg-transparent p-0 border-none text-base;
+    @apply bg-transparent p-0 border-none text-sm text-background;
   }
-
   .prose-minimal a {
-    @apply relative inline-block font-medium text-foreground transition-colors duration-300 hover:text-primary;
+    @apply font-bold underline decoration-2 decoration-foreground/30 hover:decoration-foreground transition-all;
   }
-
-  .prose-minimal a::after {
-    @apply content-[''] absolute left-0 bottom-0 w-full h-[1px] bg-primary scale-x-0 origin-right transition-transform duration-300;
-  }
-
-  .prose-minimal a:hover::after {
-    @apply scale-x-100 origin-left;
-  }
-
-  .prose-minimal strong {
-    @apply font-semibold text-foreground;
-  }
-
-  .prose-minimal em {
-    @apply italic text-foreground/90;
-  }
-
   .prose-minimal hr {
-    @apply my-12 border-none h-px bg-gradient-to-r from-transparent via-border to-transparent;
+    @apply my-12 border-none h-[3px] opacity-30 bg-gradient-to-r from-transparent via-foreground to-transparent;
   }
-  
-  .prose-minimal hr::after {
-      content: "•••";
-      @apply block text-center -mt-3 text-muted-foreground/40 tracking-[1em] text-xl;
-  }
-
 }
 
 @layer components {
   .cv-download-btn {
-    @apply relative overflow-hidden inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-sm transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0;
-  }
-
-  .cv-download-btn::before {
-    content: "";
-    @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 ease-in-out;
-  }
-
-  .cv-download-btn:hover::before {
-    @apply translate-x-full;
-  }
-
-  .cv-download-btn > * {
-    @apply relative z-10;
+    @apply inline-block font-bold text-sm tracking-widest uppercase bg-foreground text-background px-6 py-3 transition-colors hover:bg-secondary hover:text-foreground;
   }
 }
