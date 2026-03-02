@@ -180,9 +180,15 @@
   .b-geo1:hover,
   .b-geo2:hover,
   .b-moto:hover,
-  .b-jet:hover,
-  .b-speeder:hover {
+  .b-jet:hover {
     filter: invert(1);
+    transform: scale(1.008);
+    z-index: 2;
+  }
+
+  /* Custom hover: green background for the axis block */
+  .b-speeder:hover {
+    background: #4ade80;
     transform: scale(1.008);
     z-index: 2;
   }
