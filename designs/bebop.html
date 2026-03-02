@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KYGRA.XYZ</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,900;1,400;1,700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Oswald:wght@200;400;700&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f0ede6;
+    --cream: #e8e2d5;
+    --yellow: #f5c842;
+    --coral: #e8553d;
+    --teal: #2ab4b4;
+    --pink: #e8607a;
+    --blue: #3d6ee8;
+    --grey: #8a8a8a;
+  }
+
+  html { background: var(--black); overflow-x: hidden; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    cursor: crosshair;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  /* HEADER */
+  header {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .header-bg {
+    position: absolute; inset: 0;
+    background: var(--black);
+  }
+
+  .header-bg::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 55%; height: 100%;
+    background: var(--cream);
+    clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+  }
+
+  .site-id {
+    position: absolute;
+    top: 2rem; left: 2.5rem;
+    z-index: 10;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    letter-spacing: 0.4em;
+    color: var(--black);
+  }
+
+  .hero-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(7rem, 16vw, 18rem);
+    line-height: 0.85;
+    color: var(--black);
+    padding-left: 2rem;
+    letter-spacing: -0.02em;
+    user-select: none;
+    animation: glitch 8s infinite;
+  }
+
+  @keyframes glitch {
+    0%, 92%, 100% { transform: none; text-shadow: none; }
+    93% { transform: translateX(-3px); text-shadow: 3px 0 var(--coral); }
+    94% { transform: translateX(3px); text-shadow: -3px 0 var(--teal); }
+    95% { transform: none; }
+    96% { transform: translateX(2px) skewX(-2deg); }
+    97% { transform: none; }
+  }
+
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.2vw, 1.8rem);
+    color: var(--black);
+    padding-left: 2.4rem;
+    margin-top: 0.5rem;
+    opacity: 0.7;
+  }
+
+  .accent-block {
+    position: absolute;
+    top: 3rem; right: -2rem;
+    width: 46%;
+    height: 42%;
+    background: var(--yellow);
+    transform: rotate(-1.5deg);
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  .accent-block svg { width: 100%; height: 100%; padding: 1.5rem; }
+
+  .header-strip {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 5.5rem;
+    background: var(--coral);
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    overflow: hidden;
+    z-index: 10;
+  }
+
+  .strip-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 0.15em;
+    color: var(--black);
+    white-space: nowrap;
+    animation: marquee 18s linear infinite;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* MAIN GRID */
+  main {
+    position: relative;
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 0.6rem;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .box {
+    background: var(--black);
+    border: 1px solid rgba(240,237,230,0.12);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.2s ease;
+  }
+  .box:hover { transform: scale(1.008); }
+
+  .box-manifesto {
+    grid-column: 1 / 6;
+    grid-row: 1;
+    background: var(--cream);
+    color: var(--black);
+    padding: 3rem 2.5rem;
+  }
+  .box-manifesto h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 5vw, 6rem);
+    line-height: 0.9;
+    margin-bottom: 1.5rem;
+  }
+  .box-manifesto p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    font-style: italic;
+    color: #2a2a2a;
+  }
+
+  .box-moto {
+    grid-column: 6 / 10;
+    grid-row: 1;
+    background: var(--black);
+    border: 2px solid var(--yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 420px;
+  }
+
+  .box-geo1 {
+    grid-column: 10 / 13;
+    grid-row: 1;
+    background: var(--teal);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .box-quote {
+    grid-column: 1 / 5;
+    grid-row: 2;
+    background: var(--black);
+    padding: 2.5rem;
+    border-left: 6px solid var(--coral);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 300px;
+  }
+  .box-quote .jp {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 2.5vw, 2rem);
+    line-height: 1.5;
+    color: var(--yellow);
+    margin-bottom: 1rem;
+  }
+  .box-quote .en {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--grey);
+    letter-spacing: 0.1em;
+  }
+
+  .box-engine {
+    grid-column: 5 / 9;
+    grid-row: 2;
+    background: var(--coral);
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .box-text2 {
+    grid-column: 9 / 13;
+    grid-row: 2;
+    background: var(--white);
+    color: var(--black);
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .box-text2 h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 3.5vw, 4rem);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .box-text2 p {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.9;
+    color: #333;
+  }
+
+  .box-geo2 {
+    grid-column: 1 / 4;
+    grid-row: 3;
+    background: var(--yellow);
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .box-big-type {
+    grid-column: 4 / 10;
+    grid-row: 3;
+    background: var(--black);
+    padding: 3rem;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-top: 3px solid var(--pink);
+    min-height: 280px;
+  }
+  .box-big-type .bg-text {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: clamp(4rem, 9vw, 10rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    opacity: 0.08;
+    white-space: nowrap;
+    position: absolute;
+  }
+  .box-big-type .fg-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 3.5vw, 4rem);
+    color: var(--pink);
+    letter-spacing: 0.2em;
+    position: relative;
+    z-index: 1;
+    line-height: 1.1;
+  }
+
+  .box-spaceship {
+    grid-column: 10 / 13;
+    grid-row: 3;
+    background: #0d0d0d;
+    border: 1px solid rgba(42,180,180,0.25);
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .box-manifesto2 {
+    grid-column: 1 / 7;
+    grid-row: 4;
+    background: var(--blue);
+    padding: 3rem;
+    color: var(--white);
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .box-manifesto2 h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 5.5rem);
+    line-height: 0.95;
+  }
+  .box-manifesto2 p {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.9;
+    opacity: 0.85;
+    margin-top: 1.5rem;
+  }
+  .box-manifesto2 .session {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.3em;
+    opacity: 0.4;
+    margin-top: 1.5rem;
+  }
+
+  .box-blueprint {
+    grid-column: 7 / 13;
+    grid-row: 4;
+    background: #060d1a;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .box-blueprint::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(61,110,232,0.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(61,110,232,0.12) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--cream);
+    color: var(--black);
+    padding: 3rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: 6px solid var(--black);
+  }
+  .f-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 10rem);
+    line-height: 0.85;
+    color: var(--black);
+  }
+  .f-small {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-align: right;
+    opacity: 0.5;
+    line-height: 2.2;
+  }
+
+  /* SVG animation */
+  @keyframes draw {
+    0% { stroke-dashoffset: 1000; }
+    100% { stroke-dashoffset: 0; }
+  }
+  .draw { stroke-dasharray: 1000; animation: draw 3s ease forwards; }
+  .draw-slow { stroke-dasharray: 2000; animation: draw 6s ease forwards; }
+  .draw-fast { stroke-dasharray: 500; animation: draw 1.5s ease forwards; }
+
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  .blink { animation: blink 1s step-end infinite; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in   { animation: fadeUp 0.8s 0.1s ease both; }
+  .fade-in-2 { animation: fadeUp 0.8s 0.3s ease both; }
+  .fade-in-3 { animation: fadeUp 0.8s 0.6s ease both; }
+
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr; gap: 0.5rem; }
+    .box-manifesto, .box-moto, .box-geo1,
+    .box-quote, .box-engine, .box-text2,
+    .box-geo2, .box-big-type, .box-spaceship,
+    .box-manifesto2, .box-blueprint {
+      grid-column: 1 / -1 !important;
+      grid-row: auto !important;
+    }
+    .hero-name { padding-left: 1rem; }
+    footer { flex-direction: column; gap: 2rem; }
+    .f-small { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-bg"></div>
+
+  <div class="accent-block">
+    <svg viewBox="0 0 500 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#0a0a0a" stroke-width="1.4" opacity="0.9">
+        <line x1="80" y1="200" x2="420" y2="200" class="draw"/>
+        <line x1="160" y1="200" x2="120" y2="110" class="draw"/>
+        <line x1="120" y1="110" x2="220" y2="90" class="draw"/>
+        <line x1="220" y1="90" x2="320" y2="110" class="draw"/>
+        <line x1="320" y1="110" x2="360" y2="200" class="draw"/>
+        <line x1="220" y1="90" x2="230" y2="60" class="draw"/>
+        <line x1="230" y1="60" x2="200" y2="45" stroke-width="2" class="draw"/>
+        <line x1="230" y1="60" x2="260" y2="45" stroke-width="2" class="draw"/>
+        <line x1="360" y1="110" x2="380" y2="170" stroke-width="2" class="draw"/>
+        <line x1="380" y1="170" x2="385" y2="200" class="draw"/>
+        <rect x="195" y="140" width="110" height="60" class="draw"/>
+        <line x1="225" y1="140" x2="225" y2="200" class="draw"/>
+        <line x1="255" y1="140" x2="255" y2="200" class="draw"/>
+        <line x1="285" y1="140" x2="285" y2="200" class="draw"/>
+        <circle cx="130" cy="220" r="40" stroke-width="2" class="draw-slow"/>
+        <circle cx="130" cy="220" r="20" stroke-width="1" class="draw-slow"/>
+        <circle cx="130" cy="220" r="5" fill="#0a0a0a" class="draw-fast"/>
+        <circle cx="380" cy="220" r="38" stroke-width="2" class="draw-slow"/>
+        <circle cx="380" cy="220" r="18" class="draw-slow"/>
+        <circle cx="380" cy="220" r="5" fill="#0a0a0a" class="draw-fast"/>
+        <path d="M 180 190 Q 100 195 60 210" stroke-width="2" fill="none" class="draw"/>
+        <path d="M 180 195 Q 100 202 60 220" fill="none" class="draw"/>
+        <line x1="80" y1="270" x2="420" y2="270" stroke-width="0.7" stroke-dasharray="4 4"/>
+        <line x1="80" y1="265" x2="80" y2="275"/>
+        <line x1="420" y1="265" x2="420" y2="275"/>
+        <text x="235" y="285" font-size="9" font-family="monospace" fill="#0a0a0a">2140mm WHEELBASE</text>
+        <text x="200" y="175" font-size="8" font-family="monospace" fill="#0a0a0a">TYPE-7 CORE</text>
+        <text x="118" y="96" font-size="8" font-family="monospace" fill="#0a0a0a">HYBRID FRAME</text>
+        <text x="325" y="96" font-size="8" font-family="monospace" fill="#0a0a0a">INV.FORK</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="site-id">KYGRA.XYZ</div>
+
+  <div class="hero-content">
+    <div class="hero-name fade-in">KYGRA</div>
+    <div class="hero-sub fade-in-2">I build digital artifacts<span class="blink">_</span></div>
+  </div>
+
+  <div class="header-strip">
+    <span class="strip-text">
+      BOUNTY HUNTER · DIGITAL MERCENARY · MARKET OPERATOR · FREE AGENT · NO MASTERS · NO FIXED ORBIT · PERPETUAL FUTURES · SEE YOU SPACE COWBOY ·&nbsp;&nbsp;
+      BOUNTY HUNTER · DIGITAL MERCENARY · MARKET OPERATOR · FREE AGENT · NO MASTERS · NO FIXED ORBIT · PERPETUAL FUTURES · SEE YOU SPACE COWBOY ·&nbsp;&nbsp;
+    </span>
+  </div>
+</header>
+
+<main>
+
+  <!-- MANIFESTO -->
+  <div class="box box-manifesto fade-in">
+    <h2>A MAN<br>OUT OF<br>TIME.</h2>
+    <p>Witnessing the world as it was and as it is. Happily unemployed — refusing to trade the best years for a salary that sustains a wasteful existence.</p>
+    <br>
+    <p>I sustain myself by the land and the markets, answering only to necessity. Freedom in having few costs and no master.</p>
+  </div>
+
+  <!-- MOTORBIKE SKETCH (dark, yellow-bordered) -->
+  <div class="box box-moto fade-in-2">
+    <svg viewBox="0 0 500 380" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg" style="padding:1.5rem">
+      <g stroke="#f5c842" stroke-width="1.2">
+        <path d="M 60 270 L 100 220 L 180 200 L 280 195 L 360 210 L 420 270" stroke-width="2" class="draw-slow"/>
+        <path d="M 100 220 Q 200 160 280 165 L 360 185" stroke-width="2" fill="none" class="draw"/>
+        <path d="M 200 190 Q 240 175 290 185" stroke-width="3" class="draw"/>
+        <path d="M 360 185 L 410 230 L 420 270" stroke-width="2" class="draw"/>
+        <path d="M 400 225 L 440 240" stroke-width="1" class="draw-fast"/>
+        <ellipse cx="240" cy="175" rx="25" ry="20" stroke-dasharray="3 3" stroke-width="1" class="draw-slow"/>
+        <line x1="240" y1="195" x2="240" y2="225" stroke-dasharray="3 3" stroke-width="1"/>
+        <path d="M 95 250 Q 50 260 30 280 L 20 285" stroke-width="2.5" class="draw"/>
+        <path d="M 95 260 Q 50 272 30 290 L 20 295" stroke-width="2.5" class="draw"/>
+        <circle cx="110" cy="295" r="55" stroke-width="1.5" class="draw-slow"/>
+        <circle cx="110" cy="295" r="28" class="draw-slow"/>
+        <circle cx="110" cy="295" r="6" fill="#f5c842" stroke="none"/>
+        <line x1="110" y1="240" x2="110" y2="267" stroke-width="0.8"/>
+        <line x1="110" y1="323" x2="110" y2="350" stroke-width="0.8"/>
+        <line x1="55" y1="295" x2="82" y2="295" stroke-width="0.8"/>
+        <line x1="138" y1="295" x2="165" y2="295" stroke-width="0.8"/>
+        <line x1="71" y1="256" x2="88" y2="273" stroke-width="0.8"/>
+        <line x1="132" y1="317" x2="149" y2="334" stroke-width="0.8"/>
+        <line x1="71" y1="334" x2="88" y2="317" stroke-width="0.8"/>
+        <line x1="132" y1="273" x2="149" y2="256" stroke-width="0.8"/>
+        <circle cx="390" cy="295" r="50" stroke-width="1.5" class="draw-slow"/>
+        <circle cx="390" cy="295" r="22" class="draw-slow"/>
+        <circle cx="390" cy="295" r="6" fill="#f5c842" stroke="none"/>
+        <line x1="390" y1="245" x2="375" y2="215" stroke-width="2.5" class="draw"/>
+        <line x1="395" y1="245" x2="385" y2="215" stroke-width="2.5" class="draw"/>
+        <line x1="376" y1="215" x2="350" y2="200" stroke-width="2" class="draw"/>
+        <line x1="376" y1="215" x2="402" y2="200" stroke-width="2" class="draw"/>
+        <rect x="195" y="210" width="90" height="50" rx="4" stroke-dasharray="5 3" stroke-width="1" class="draw"/>
+        <line x1="210" y1="210" x2="210" y2="260" stroke-width="0.5"/>
+        <line x1="225" y1="210" x2="225" y2="260" stroke-width="0.5"/>
+        <line x1="240" y1="210" x2="240" y2="260" stroke-width="0.5"/>
+        <line x1="255" y1="210" x2="255" y2="260" stroke-width="0.5"/>
+        <line x1="270" y1="210" x2="270" y2="260" stroke-width="0.5"/>
+        <text x="192" y="244" font-size="7" font-family="monospace" fill="#f5c842">PLASMA CORE</text>
+        <text x="28" y="250" font-size="7" font-family="monospace" fill="#f5c842">TYPE-IX EXHAUST</text>
+        <text x="338" y="195" font-size="7" font-family="monospace" fill="#f5c842">NEURAL HUD</text>
+        <text x="180" y="355" font-size="8" font-family="monospace" fill="#f5c842">KYGRA MK.I — 2074 SPEC</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- GEO 1 -->
+  <div class="box box-geo1">
+    <svg viewBox="0 0 200 280" width="100%" height="100%" fill="none">
+      <g stroke="#0a0a0a" stroke-width="1.4">
+        <rect x="15" y="15" width="85" height="60" class="draw-fast"/>
+        <rect x="30" y="30" width="85" height="60" class="draw-fast"/>
+        <rect x="45" y="45" width="85" height="60" fill="#0a0a0a"/>
+        <polygon points="100,135 20,255 180,255" stroke-width="1.5" class="draw-slow"/>
+        <polygon points="100,148 42,240 158,240" stroke-dasharray="3 3" class="draw-slow"/>
+        <line x1="100" y1="135" x2="100" y2="255"/>
+        <circle cx="55" cy="75" r="8" fill="#0a0a0a"/>
+        <circle cx="100" cy="195" r="14" class="draw-fast"/>
+        <circle cx="100" cy="195" r="5" fill="#0a0a0a"/>
+        <text x="16" y="11" font-size="8" font-family="monospace" fill="#0a0a0a">GEO.01</text>
+        <text x="122" y="255" font-size="8" font-family="monospace" fill="#0a0a0a">45°</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="box box-quote fade-in-3">
+    <div class="jp">狂った世界では、<br>狂った人々だけが<br>正気である。</div>
+    <div class="en">// In a mad world, only the mad are sane.</div>
+    <div style="font-family:'Bebas Neue',sans-serif; font-size:0.9rem; letter-spacing:0.3em; color:var(--grey); margin-top:1.5rem;">AKIRA KUROSAWA</div>
+  </div>
+
+  <!-- ENGINE CROSS-SECTION -->
+  <div class="box box-engine">
+    <svg viewBox="0 0 400 260" width="100%" height="100%" fill="none">
+      <g stroke="#0a0a0a" stroke-width="1.4">
+        <rect x="50" y="40" width="300" height="175" rx="6" stroke-width="2" class="draw-slow"/>
+        <ellipse cx="130" cy="40" rx="30" ry="12" stroke-width="2" class="draw"/>
+        <ellipse cx="200" cy="40" rx="30" ry="12" stroke-width="2" class="draw"/>
+        <ellipse cx="270" cy="40" rx="30" ry="12" stroke-width="2" class="draw"/>
+        <line x1="130" y1="52" x2="130" y2="120" stroke-width="2.5" class="draw-fast"/>
+        <line x1="200" y1="52" x2="200" y2="130" stroke-width="2.5" class="draw-fast"/>
+        <line x1="270" y1="52" x2="270" y2="110" stroke-width="2.5" class="draw-fast"/>
+        <path d="M 60 175 Q 130 145 200 170 Q 270 193 340 160" stroke-width="3" fill="none" class="draw-slow"/>
+        <circle cx="130" cy="155" r="10" class="draw-fast"/>
+        <circle cx="200" cy="170" r="10" class="draw-fast"/>
+        <circle cx="270" cy="157" r="10" class="draw-fast"/>
+        <circle cx="130" cy="155" r="4" fill="#0a0a0a"/>
+        <circle cx="200" cy="170" r="4" fill="#0a0a0a"/>
+        <circle cx="270" cy="157" r="4" fill="#0a0a0a"/>
+        <rect x="55" y="88" width="18" height="60" rx="2" class="draw"/>
+        <rect x="327" y="88" width="18" height="60" rx="2" class="draw"/>
+        <text x="100" y="32" font-size="9" font-family="monospace" fill="#0a0a0a">CYL.A</text>
+        <text x="170" y="32" font-size="9" font-family="monospace" fill="#0a0a0a">CYL.B</text>
+        <text x="240" y="32" font-size="9" font-family="monospace" fill="#0a0a0a">CYL.C</text>
+        <text x="58" y="235" font-size="8" font-family="monospace" fill="#0a0a0a">TRIPLE-CORE V9 · 2071 CONFIG</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- TEXT BLOCK -->
+  <div class="box box-text2 fade-in">
+    <h3>TECHNOLOGY<br>IS A<br>SERVANT.</h3>
+    <p>A terrible master;<br>embedding itself<br>into the fabric<br>of civilization.<br><br>I view it with<br>skepticism<br>and suspicion.</p>
+  </div>
+
+  <!-- GEO 2 -->
+  <div class="box box-geo2">
+    <svg viewBox="0 0 240 240" width="100%" height="100%" fill="none">
+      <g stroke="#0a0a0a" stroke-width="1.4">
+        <rect x="20" y="20" width="200" height="200" class="draw-slow"/>
+        <rect x="45" y="45" width="150" height="150" transform="rotate(15 120 120)" class="draw-slow"/>
+        <rect x="70" y="70" width="100" height="100" transform="rotate(30 120 120)" class="draw"/>
+        <rect x="95" y="95" width="50" height="50" transform="rotate(45 120 120)" class="draw-fast"/>
+        <circle cx="120" cy="120" r="6" fill="#0a0a0a"/>
+        <line x1="20" y1="20" x2="30" y2="20"/><line x1="20" y1="20" x2="20" y2="30"/>
+        <line x1="220" y1="20" x2="210" y2="20"/><line x1="220" y1="20" x2="220" y2="30"/>
+        <line x1="20" y1="220" x2="30" y2="220"/><line x1="20" y1="220" x2="20" y2="210"/>
+        <line x1="220" y1="220" x2="210" y2="220"/><line x1="220" y1="220" x2="220" y2="210"/>
+        <line x1="20" y1="20" x2="220" y2="220" stroke-dasharray="6 4" stroke-width="0.7"/>
+        <line x1="220" y1="20" x2="20" y2="220" stroke-dasharray="6 4" stroke-width="0.7"/>
+        <text x="96" y="234" font-size="8" font-family="monospace" fill="#0a0a0a">GEO.02</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- BIG TYPE -->
+  <div class="box box-big-type">
+    <span class="bg-text">FREE&nbsp;AGENT</span>
+    <div class="fg-text">FREE<br>AGENT.</div>
+  </div>
+
+  <!-- SPACECRAFT -->
+  <div class="box box-spaceship">
+    <svg viewBox="0 0 300 240" width="100%" height="100%" fill="none">
+      <g stroke="#2ab4b4" stroke-width="1.2">
+        <path d="M 30 120 L 200 92 L 270 120 L 200 148 Z" stroke-width="2" class="draw-slow"/>
+        <ellipse cx="195" cy="120" rx="28" ry="18" class="draw"/>
+        <ellipse cx="200" cy="117" rx="16" ry="10" stroke-dasharray="3 2" class="draw"/>
+        <path d="M 120 106 L 80 58 L 150 96" stroke-width="1.5" class="draw"/>
+        <path d="M 120 134 L 80 182 L 150 144" stroke-width="1.5" class="draw"/>
+        <rect x="22" y="104" width="24" height="32" rx="4" stroke-width="1.5" class="draw"/>
+        <ellipse cx="22" cy="120" rx="7" ry="16" stroke-width="1" class="draw-fast"/>
+        <path d="M 14 113 Q 5 120 14 127" stroke-width="2" class="draw-fast"/>
+        <line x1="270" y1="120" x2="295" y2="120" stroke-width="3" class="draw-fast"/>
+        <line x1="130" y1="106" x2="200" y2="96" stroke-width="0.7" stroke-dasharray="4 3"/>
+        <line x1="130" y1="134" x2="200" y2="144" stroke-width="0.7" stroke-dasharray="4 3"/>
+        <text x="58" y="53" font-size="7" font-family="monospace" fill="#2ab4b4">WING-L</text>
+        <text x="58" y="192" font-size="7" font-family="monospace" fill="#2ab4b4">WING-R</text>
+        <text x="180" y="86" font-size="7" font-family="monospace" fill="#2ab4b4">COCKPIT</text>
+        <text x="252" y="113" font-size="7" font-family="monospace" fill="#2ab4b4">T-RAIL</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- MANIFESTO 2 -->
+  <div class="box box-manifesto2 fade-in">
+    <div>
+      <h2>THEY MUST<br>CREATE NEW<br>DREAMS.</h2>
+      <p>
+        "...by breaking traditional styles.<br>
+        They are sick and tired of<br>
+        conventional fixed style.<br>
+        The work, which becomes a new<br>
+        genre itself, will play without<br>
+        fear of risky things."<br>
+        <br>
+        — COWBOY BEBOP MANIFESTO, 2071
+      </p>
+    </div>
+    <div class="session">SESSION 01 / 26</div>
+  </div>
+
+  <!-- BLUEPRINT TOP-VIEW HOVERBIKE -->
+  <div class="box box-blueprint">
+    <svg viewBox="0 0 560 280" width="100%" height="100%" fill="none" style="position:relative;z-index:1">
+      <g stroke="#3d6ee8" stroke-width="1">
+        <line x1="280" y1="20" x2="280" y2="260" stroke-width="0.5" stroke-dasharray="8 4"/>
+        <line x1="40" y1="140" x2="520" y2="140" stroke-width="0.5" stroke-dasharray="8 4"/>
+        <path d="M 200 80 Q 280 50 360 80 L 390 140 Q 280 160 170 140 Z" stroke-width="1.5" class="draw-slow"/>
+        <ellipse cx="280" cy="115" rx="45" ry="25" stroke-dasharray="3 2" class="draw"/>
+        <ellipse cx="175" cy="115" rx="25" ry="15" class="draw"/>
+        <ellipse cx="385" cy="115" rx="25" ry="15" class="draw"/>
+        <rect x="245" y="158" width="70" height="20" rx="4" class="draw-fast"/>
+        <path d="M 240 60 Q 280 45 320 60" stroke-width="1.5" class="draw"/>
+        <line x1="150" y1="60" x2="410" y2="60" stroke-width="0.6" stroke-dasharray="3 3"/>
+        <line x1="150" y1="55" x2="150" y2="65"/>
+        <line x1="410" y1="55" x2="410" y2="65"/>
+        <text x="255" y="54" font-size="8" font-family="monospace" fill="#3d6ee8">3200mm</text>
+        <line x1="130" y1="80" x2="130" y2="185" stroke-width="0.6" stroke-dasharray="3 3"/>
+        <line x1="125" y1="80" x2="135" y2="80"/>
+        <line x1="125" y1="185" x2="135" y2="185"/>
+        <text x="96" y="138" font-size="8" font-family="monospace" fill="#3d6ee8">1450mm</text>
+        <text x="258" y="105" font-size="8" font-family="monospace" fill="#3d6ee8">PILOT</text>
+        <text x="155" y="113" font-size="7" font-family="monospace" fill="#3d6ee8">LIFT-L</text>
+        <text x="365" y="113" font-size="7" font-family="monospace" fill="#3d6ee8">LIFT-R</text>
+        <text x="256" y="176" font-size="7" font-family="monospace" fill="#3d6ee8">THRUST</text>
+        <text x="200" y="228" font-size="9" font-family="monospace" fill="#3d6ee8">KYGRA TYPE-X HOVERBIKE — 2074 SPEC</text>
+        <line x1="40" y1="20" x2="60" y2="20" stroke-width="0.8"/>
+        <line x1="40" y1="20" x2="40" y2="40" stroke-width="0.8"/>
+        <line x1="520" y1="20" x2="500" y2="20" stroke-width="0.8"/>
+        <line x1="520" y1="20" x2="520" y2="40" stroke-width="0.8"/>
+        <line x1="40" y1="260" x2="60" y2="260" stroke-width="0.8"/>
+        <line x1="40" y1="260" x2="40" y2="240" stroke-width="0.8"/>
+        <line x1="520" y1="260" x2="500" y2="260" stroke-width="0.8"/>
+        <line x1="520" y1="260" x2="520" y2="240" stroke-width="0.8"/>
+      </g>
+    </svg>
+  </div>
+
+</main>
+
+<footer>
+  <div class="f-big">SEE YOU<br>SPACE<br>COWBOY.</div>
+  <div class="f-small">
+    KYGRA.XYZ<br>
+    NO MASTERS · NO FIXED ORBIT<br>
+    PERPETUAL FUTURES · DIGITAL ARTIFACTS<br>
+    2074 — UNIVERSE ∞
+  </div>
+</footer>
+
+<script>
+  const boxes = document.querySelectorAll('.box');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.08 });
+
+  boxes.forEach((b, i) => {
+    b.style.opacity = '0';
+    b.style.transform = 'translateY(18px)';
+    b.style.transition = `opacity 0.5s ${i * 0.04}s ease, transform 0.5s ${i * 0.04}s ease`;
+    obs.observe(b);
+  });
+
+  // Occasional glitch flash
+  setInterval(() => {
+    const all = document.querySelectorAll('.box');
+    const t = all[Math.floor(Math.random() * all.length)];
+    t.style.filter = 'invert(1)';
+    setTimeout(() => t.style.filter = 'none', 70);
+  }, 5500);
+</script>
+</body>
+</html>

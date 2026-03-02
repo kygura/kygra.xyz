@@ -32,7 +32,7 @@ const Home = () => {
       <div className="md:col-span-2 p-6 md:p-8 md:pr-12 md:border-r-2 border-foreground relative border-b-2 md:border-b-0 border-foreground">
         <div className="mb-8 relative z-10 mt-2">
           <h1 className="font-['Bebas_Neue'] text-3xl md:text-5xl lg:text-5xl text-foreground leading-[1.2] tracking-wider mb-2 min-h-[1.2em]">
-            <TypewriterEffect text="Welcome friend" typingDelay={70} deletingDelay={30} cursor={true} cursorCharacter="_" />
+            <TypewriterEffect text="Hola amigo" typingDelay={70} deletingDelay={30} cursor={true} cursorCharacter="_" />
           </h1>
           <div className="font-['Courier_Prime'] text-[0.85rem] md:text-[0.95rem] leading-[1.7] max-w-[520px] text-muted-foreground italic min-h-[1.5em]">
             <TypewriterEffect
@@ -71,78 +71,55 @@ const Home = () => {
         <div className="text-[0.85rem] md:text-[0.95rem] leading-[1.7] max-w-[520px] text-foreground space-y-5 relative z-10">
           <p className="font-['Bebas_Neue'] text-2xl sm:text-3xl md:text-4xl text-foreground tracking-[0.1em]">ON THE STATE OF THINGS</p>
           <p>
-            There's a kind of person who comes to understand, usually through some combination of luck and suffering, that the game being played on the surface is not the actual game. That life as it is currently being presented is not an active state of living, but a slow erasure and annihilation of the humane; as it is replaced by the machine-like.
-          </p>
-          <p>
-            There was this old ideal that history must have a direction, that progress compounds toward human flourishing. This was the founding myth of the civilization we inherited. What we actually inherited was its husk. The form without the substance. Democracy as a marketing term. Freedom as the freedom to choose the size of your cage. Which subscription plan manages your attention. Meaning as something you're supposed to find on your own time, after your shift.
+            There's a kind of person who comes to understand, usually through some combination of insight, luck and suffering, that the game being played on the surface is not the actual game. That life as it is currently being presented is not an active state of living, but a slow erasure and annihilation of the humane; as it is replaced by the machine-like.
           </p>
           <div className="border-l-2 border-destructive pl-4 my-6 space-y-4 text-muted-foreground">
             <p>
-              Meaning used to be an experience and state of being inherit in a simpler lifestyle guided by the need for survival.
-              Now it surrogated as an external and commodified into a product one must buy.
-              The promise is:
-              You'll find your meaning on a subscription plan, a new job, a new relationship, a new house, a new car, a new phone, a new app, a new game, a new show, a new book, a new person, a new idea, a new belief, a new hope, a new dream, a new goal, a new purpose, a new meaning.
-              Meaning is understood as this external source of fulfillment, something that you can't create for yourself, but must seek out.
+              The old ideal of compounded human flourishing is largely a husk. We are left with the illusion of choice, where meaning is commodified and sold back to us on a subscription plan. We are told to hustle our way out, but the hustle is part of the same machine, repackaged as resistance.
             </p>
             <p>
-              Not a crisis, not a moment a slow erasure. The purchasing power of your time. The integrity of the institutions you were handed. The promise that participation would be enough. Work hard, stay inside the lines, believe in the trajectory. Most of us spent our twenties discovering that the trajectory was never going where they said it was going.
+              So how does one live? You cannot vote your way out. You cannot buy your way out.
+              The only answer is to live with integrity, with agency, and with your eyes open to the nature of reality. To strip away ideology and question everything.
             </p>
           </div>
           <p>
-            This isn't a political crisis either. Every political tribe has failed you, in sequence, with conviction. The left and the right are both administrative problems, not spiritual ones. What's broken goes deeper than policy — it's in the texture of daily life. The atomization. The screen-mediated loneliness. The feeling of being a node in a network that doesn't care whether you're there. What I've started calling the interfaced flesh: the human being who can only encounter the world through an interface that is also surveilling him, selling him back to himself, slowly replacing his inner life with a curated performance of it.
+            Treat life as a game you didn't design but have to play. Not with cynicism, but positive indifference. The rules are visible if you stop pretending they're natural. You learn to read the structure of what surrounds you — the market, the institution, the social system — and you find the degrees of freedom that the structure inadvertently permits.
           </p>
-          <div className="border-l-2 border-destructive pl-4 my-6 space-y-4 text-muted-foreground">
-            <p>
-              You cannot vote your way out of this. You cannot hustle your way out of it either — the hustle is part of the same machine, repackaged as resistance. Three side incomes and a growth mindset is not emancipation. It is participation with extra steps, optimized for the platform that profits from your exhaustion.
-            </p>
-          </div>
-          <p>
-            So where does that leave a person?
-          </p>
-          <p>
-            Posed differently: <em>how do I live?</em>
-          </p>
-          <p>
-            Not "how do I succeed" — success does not mean much if you remain confined and captive in the system . It alleviates the economic pains, but keeps the existential ones.One might rephrase the question into "how do I escape?" Escape here means to stop playing the game entirely. Abandon the rat race all together. I can honor that.
-            There is beauty in a quiet life; however it is also tragic to flee from a society, as the world keeps turning without us. Interestingally though, the courage to abandon society belongs to the few amongst us with the wisdom, patience and courage that can heal it.
-          </p>
-          <p>
-            The hermit in the mountain laughs at us, knowing it is all a game. And the games of men run on deception and unspoken rules. A game of poker where the stakes are never disclosed and most of us play double 9s.
-          </p>
-          <p>
-            To me then, the question
-            becomes <em>"how do I live?"</em>, to which there is only one answer I have:
-            <br />
-            With integrity, with agency, with your eyes open to the nature of reality, stripped of ideology and prior assumptions, where nothing is assumed and everything is questioned.
-            What you are left with is both illuminating and deceptly disappointing:
-            The fact that life was and will never be easy and each generation is tasked with confronting the corruption, decay and evil of their age with courage:
-            We inherit the spirit of our ancestors, and attempt to grow beyond them.
-          </p>
-          <div className="border-l-2 border-destructive pl-4 my-6 space-y-4 text-muted-foreground">
-            <p>
-              Treat life as a game you didn't design but have to play. Not with cynicism, but positive indifference. With clarity. The rules are visible if you stop pretending they're natural.
-              The incentives are legible if you stop mistaking them for morality. The exits are real if you stop needing permission to use them. You learn to read the structure of what surrounds you — the market, the institution, the social system — and you find the degrees of freedom that the structure inadvertently permits.
-            </p>
-            <p>
-              That is not a formula. It's a posture. It requires giving up the story that someone will fix it, that the right ideology will finally get traction, that the system will eventually reward those who play by its stated rules. It requires building your life around what is actually true instead of what was promised.
-            </p>
-          </div>
           <p>
             This site is a record of that attempt. The thinking, the work, the ongoing effort to be a real person in an era that finds that inconvenient.
           </p>
-          <p>
-            If that resonates and if you've felt the ache of it, the particular loneliness of seeing clearly in a culture that profits from confussion;
-            You are in the right place.
-            The work is not done.
-            Our ambitions not met.
-          </p>
-          <p>
-            We are not done yet.
-            <br />
-            <i>
-              —K.
-            </i>
-          </p>
+          <Link
+            to="/writings/on-the-state-of-things"
+            className="mt-10 block border-2 border-foreground hover:border-destructive transition-colors duration-300 relative group overflow-hidden no-underline"
+          >
+            {/* Background Hover Effect */}
+            <div className="absolute inset-0 bg-transparent group-hover:bg-destructive/[0.03] transition-colors duration-500 pointer-events-none z-0"></div>
+
+            {/* Decorative Side Element */}
+            <div className="absolute right-0 top-0 bottom-0 w-10 md:w-16 border-l-2 border-foreground group-hover:border-destructive transition-colors duration-300 flex flex-col items-center justify-center bg-foreground group-hover:bg-destructive text-background pointer-events-none z-10 overflow-hidden">
+              <span className="font-mono text-[0.7rem] md:text-[0.85rem] -rotate-90 tracking-[0.3em] uppercase whitespace-nowrap group-hover:scale-110 transition-transform duration-300">
+                Read
+              </span>
+            </div>
+
+            <div className="relative z-10 p-6 md:p-8 pr-16 md:pr-24 flex flex-col gap-2">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="h-[2px] w-6 md:w-8 bg-destructive group-hover:w-12 transition-all duration-300"></span>
+                <span className="font-['Special_Elite'] text-[0.75rem] uppercase tracking-widest text-destructive">
+                  Core Ideology
+                </span>
+              </div>
+              
+
+              <h3 className="font-['Bebas_Neue'] text-3xl md:text-4xl lg:text-5xl tracking-[0.05em] text-foreground m-0 leading-[0.9] group-hover:text-destructive transition-colors duration-300">
+                ON THE STATE OF THINGS
+              </h3>
+
+              <p className="font-['Courier_Prime'] text-[0.85rem] text-muted-foreground md:text-[0.95rem] max-w-[400px] mt-2 mb-0">
+                The full essay exploring the erasure of the humane, the interfaced flesh, and the absolute necessity of reclaiming agency.
+              </p>
+            </div>
+          </Link>
         </div>
 
         <div className="mt-8 pt-4 border-t border-dashed border-muted relative z-10">
@@ -175,7 +152,7 @@ const Home = () => {
 
         <div className="mb-10 pb-8 border-b border-dashed border-muted relative">
           <p className="font-['Special_Elite'] text-[1.1rem] leading-[1.5] text-[#2c4a7c] dark:text-[#5e8be6] border-l-4 border-[#2c4a7c] dark:border-[#5e8be6] pl-4 italic">
-            "Everything is a pattern, asking to be resolved."
+            "Everything is a pattern asking to be resolved."
           </p>
         </div>
 
@@ -184,9 +161,7 @@ const Home = () => {
             <div>ES — native</div>
             <div>EN — fluent</div>
             <div>DE — functional</div>
-            <div>JS/TS — daily</div>
-            <div>PY — when needed</div>
-            <div>SOL — on-chain</div>
+
           </div>
         </div>
 
@@ -194,9 +169,9 @@ const Home = () => {
           <div className="text-[0.75rem] leading-[1.8] text-muted-foreground">
             Find me where the work lives.<br />
             Not on LinkedIn.<br />
-            <a href="mailto:alphaomega@outlook.es"
+            <a href="mailto:kygra1@proton.com"
               rel="noopener noreferrer"
-              className="text-destructive font-['Special_Elite'] no-underline text-[0.85rem] mt-1 inline-block hover:underline">alphaomega@outlook.es</a>
+              className="text-destructive font-['Special_Elite'] no-underline text-[0.85rem] mt-1 inline-block hover:underline">kygra1@proton.com</a>
           </div>
         </div>
       </div>

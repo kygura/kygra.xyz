@@ -52,10 +52,10 @@ const Navigation = () => {
             className="absolute top-0 left-0 translate-x-[8px] translate-y-[8px] font-['UnifrakturMaguntia'] text-[clamp(5rem,14vw,9rem)] leading-[0.85] text-destructive tracking-[-2px] z-0 opacity-60"
             style={{ transition: 'transform 0.1s ease-out' }}
           >
-           Opus Natura Libertas
+           Opus Libertatis
           </div>
           <div className="font-['UnifrakturMaguntia'] text-[clamp(5rem,14vw,9rem)] leading-[0.85] text-foreground tracking-[-2px] relative z-10">
-           Opus Natura Libertas
+           Opus Libertatis
           </div>
         </div>
 
