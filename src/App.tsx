@@ -71,7 +71,7 @@ const App = () => (
               </Layout>
             }
           />
-          {import.meta.env.VITE_SHOW_CV === "true" && (
+          
             <Route
               path="/cv"
               element={
@@ -80,7 +80,7 @@ const App = () => (
                 </Layout>
               }
             />
-          )}
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

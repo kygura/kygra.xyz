@@ -3,31 +3,28 @@ export const Axis = () => {
     <div className="box b-blueprint">
       <svg viewBox="0 0 400 280" fill="none" style={{ width: '100%', height: '100%', padding: '1.5rem' }}>
         <g stroke="#f0ede6" strokeWidth="0.9">
+          {/* Dense mesh of intersecting ellipses */}
           <circle cx="200" cy="140" r="110" strokeWidth="1.8" />
-          <ellipse cx="200" cy="140" rx="110" ry="10" />
-          <ellipse cx="200" cy="140" rx="109" ry="28" />
-          <ellipse cx="200" cy="140" rx="105" ry="46" />
-          <ellipse cx="200" cy="140" rx="99" ry="63" />
-          <ellipse cx="200" cy="140" rx="89" ry="78" />
-          <ellipse cx="200" cy="140" rx="75" ry="90" />
-          <ellipse cx="200" cy="140" rx="55" ry="99" />
-          <ellipse cx="200" cy="140" rx="75" ry="90" transform="rotate(180 200 140)" />
-          <ellipse cx="200" cy="140" rx="89" ry="78" transform="rotate(180 200 140)" />
-          <ellipse cx="200" cy="140" rx="99" ry="63" transform="rotate(180 200 140)" />
-          <ellipse cx="200" cy="140" rx="105" ry="46" transform="rotate(180 200 140)" />
-          <ellipse cx="200" cy="140" rx="109" ry="28" transform="rotate(180 200 140)" />
-          <ellipse cx="200" cy="140" rx="18" ry="110" />
+
+          {/* Horizontal / Vertical bands */}
+          <ellipse cx="200" cy="140" rx="110" ry="25" />
+          <ellipse cx="200" cy="140" rx="110" ry="50" />
+          <ellipse cx="200" cy="140" rx="110" ry="75" />
+          <ellipse cx="200" cy="140" rx="25" ry="110" />
           <ellipse cx="200" cy="140" rx="50" ry="110" />
-          <ellipse cx="200" cy="140" rx="80" ry="110" />
-          <ellipse cx="200" cy="140" rx="105" ry="110" />
-          <ellipse cx="200" cy="140" rx="18" ry="110" transform="rotate(30 200 140)" />
-          <ellipse cx="200" cy="140" rx="50" ry="110" transform="rotate(30 200 140)" />
-          <ellipse cx="200" cy="140" rx="80" ry="110" transform="rotate(30 200 140)" />
-          <ellipse cx="200" cy="140" rx="105" ry="110" transform="rotate(30 200 140)" />
-          <ellipse cx="200" cy="140" rx="18" ry="110" transform="rotate(60 200 140)" />
-          <ellipse cx="200" cy="140" rx="50" ry="110" transform="rotate(60 200 140)" />
-          <circle cx="200" cy="140" rx="80" ry="110" transform="rotate(60 200 140)" />
-          <circle cx="110" cy="90" r="7" fill="#f0ede6" />
+          <ellipse cx="200" cy="140" rx="75" ry="110" />
+
+          {/* Angled bands */}
+          <ellipse cx="200" cy="140" rx="40" ry="110" transform="rotate(45 200 140)" />
+          <ellipse cx="200" cy="140" rx="75" ry="110" transform="rotate(45 200 140)" />
+          <ellipse cx="200" cy="140" rx="40" ry="110" transform="rotate(-45 200 140)" />
+          <ellipse cx="200" cy="140" rx="75" ry="110" transform="rotate(-45 200 140)" />
+
+          {/* Central Iris Ellipse (pointed ends) */}
+          <path d="M200 90 Q 230 140 200 190 Q 170 140 200 90 Z" fill="none" strokeWidth="1.2" transform="rotate(45 200 140)" />
+
+          {/* Distinct solid white offset circle */}
+          <circle cx="102" cy="108" r="7.5" fill="#f0ede6" />
 
           {/* Top Left: Square with two 4-point stars */}
           <rect x="30" y="40" width="45" height="45" strokeWidth="1.2" />
@@ -42,10 +39,10 @@ export const Axis = () => {
 
           <text x="15" y="12" fontSize="8" fontFamily="monospace" fill="#f0ede6">AXIS — DENSE MESH</text>
         </g>
-        {/* Red tilt axis */}
-        <line x1="150" y1="45" x2="250" y2="235" stroke="#e8553d" strokeWidth="1.2" strokeDasharray="5 4" />
-        <circle cx="154" cy="48" r="4" fill="#e8553d" />
-        <circle cx="246" cy="232" r="4" fill="#e8553d" />
+        {/* Diagonal red tilt axis */}
+        <line x1="145" y1="80" x2="245" y2="200" stroke="#e8553d" strokeWidth="1.5" strokeDasharray="6 5" />
+        <circle cx="148" cy="83" r="5" fill="#e8553d" />
+        <circle cx="242" cy="197" r="5" fill="#e8553d" />
       </svg>
       <span className="spec">AXIS — SECURE TRANSMISSION</span>
     </div>

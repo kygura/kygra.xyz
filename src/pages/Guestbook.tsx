@@ -154,44 +154,44 @@ const Guestbook = () => {
         </h1>
 
         <p className="text-lg font-light text-muted-foreground mb-8">
-          Leave a mark brother, say hello, or just let me know you were here.
+          Leave a mark here.
         </p>
 
         <Card className="mb-12 border-muted bg-card/40 shadow-sm">
           <CardContent className="pt-4 pb-4">
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <div className="flex gap-3">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <Input
                   placeholder="Name (optional)"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="bg-background/50 border-muted w-1/3"
+                  className="bg-background/50 border-muted sm:max-w-xs"
                 />
-                <div className="relative flex-1">
-                  <AutosizeTextarea
-                    placeholder="Leave a message..."
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    maxLength={MAX_CHARS}
-                    minRows={1}
-                    maxRows={8}
-                    className="w-full bg-background/50 border-muted pr-12 resize-none"
-                  />
-                  <span className="absolute bottom-2 right-3 text-[10px] text-muted-foreground pointer-events-none select-none">
-                    {message.length}/{MAX_CHARS}
-                  </span>
-                </div>
+              </div>
+              <div className="relative">
+                <AutosizeTextarea
+                  placeholder="Leave a message..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  maxLength={MAX_CHARS}
+                  minRows={3}
+                  maxRows={8}
+                  className="w-full bg-background/50 border-muted pb-8 resize-none"
+                />
+                <span className="absolute bottom-2 right-3 text-[10px] text-muted-foreground pointer-events-none select-none">
+                  {message.length}/{MAX_CHARS}
+                </span>
+              </div>
+              <div className="flex justify-end pt-2">
                 <Button
                   type="submit"
                   disabled={submitting || cooldown || !message.trim()}
-                  variant="secondary"
-                  size="icon"
-                  className="shrink-0"
+                  className="w-full sm:w-auto px-8"
                 >
                   {submitting ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Publishing...</>
                   ) : (
-                    <SendHorizontal className="h-4 w-4" />
+                    <><SendHorizontal className="mr-2 h-4 w-4" /> Post Entry</>
                   )}
                 </Button>
               </div>
@@ -236,7 +236,7 @@ const Guestbook = () => {
             </>
           ) : (
             <div className="text-center py-12 text-muted-foreground border border-dashed border-muted rounded-lg bg-card/20">
-              <p>No entries yet. Be the first to sign!</p>
+              <p>No entries yet.</p>
             </div>
           )}
         </div>

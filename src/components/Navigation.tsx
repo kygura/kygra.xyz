@@ -34,9 +34,9 @@ const Navigation = () => {
     { path: "/", label: "Home" },
     { path: "/writings", label: "Writings" },
     { path: "/projects", label: "Software" },
-    { path: "/artifacts", label: "Artifacts" },
+    /* { path: "/artifacts", label: "Artifacts" }, */
     { path: "/guestbook", label: "Guestbook" },
-    ...(import.meta.env.VITE_SHOW_CV === "true" ? [{ path: "/cv", label: "CV" }] : []),
+    { path: "/cv", label: "CV" }
   ];
 
   return (
@@ -73,8 +73,8 @@ const Navigation = () => {
               <NavLink
                 to={item.path}
                 end={item.path === "/"}
-                className="transition-colors duration-200 uppercase whitespace-nowrap text-background hover:text-destructive no-underline"
-                activeClassName="!text-destructive"
+                className="px-4 py-1.5 transition-colors duration-200 uppercase whitespace-nowrap text-background hover:bg-background hover:text-foreground no-underline"
+                activeClassName="!bg-background !text-foreground"
               >
                 {item.label}
               </NavLink>
