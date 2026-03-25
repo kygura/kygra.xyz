@@ -10,7 +10,7 @@ const Home = () => {
         <div className="flex-1 md:pr-8 md:border-r-2 border-foreground relative border-b-2 md:border-b-0 pb-8 md:pb-0">
           <div className="mb-8 relative z-10 mt-2">
             <h1 className="font-['Bebas_Neue'] text-3xl md:text-5xl lg:text-5xl text-foreground leading-[1.2] tracking-wider mb-2 min-h-[1.2em]">
-              <TypewriterEffect text="Greetings" typingDelay={70} deletingDelay={30} cursor={true} cursorCharacter="_" />
+              <TypewriterEffect text="Hello there" typingDelay={70} deletingDelay={30} cursor={true} cursorCharacter="_" />
             </h1>
             
           </div>
@@ -37,7 +37,7 @@ const Home = () => {
         <div className="flex-[0.8] flex flex-col justify-between pt-2">
           <div>
             <div className="mb-10 pb-8 border-b border-dashed border-muted relative">
-              <p className="font-['Special_Elite'] text-[1.1rem] leading-[1.5] text-[#2c4a7c] dark:text-[#5e8be6] border-l-4 border-[#2c4a7c] dark:border-[#5e8be6] pl-4 italic">
+              <p className="font-['Special_Elite'] text-[1.1rem] leading-[1.5] text-[#2c4a7c] dark:text-[crimson] border-l-4 border-[#2c4a7c] dark:border-[crimson] pl-4 italic">
                 "Everything is a pattern asking to be resolved."
               </p>
             </div>
@@ -95,35 +95,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* BOTTOM STRIP - PROJECTS */}
-      <div className="pt-8 border-t-2 border-foreground relative">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-          <div className="relative">
-            <div className="font-['Bebas_Neue'] text-[1.8rem] leading-none mb-2 text-foreground">HYPERQUANT</div>
-            <p className="text-[0.8rem] leading-[1.6] text-muted-foreground">
-              A trading dashboard built for the way I actually think.
-              Regime classification, margin visualization, execution flow.
-            </p>
-          </div>
-
-          <div className="relative">
-            <div className="font-['Bebas_Neue'] text-[1.8rem] leading-none mb-2 text-foreground">MEMESCOPE</div>
-            <p className="text-[0.8rem] leading-[1.6] text-muted-foreground">
-              Autonomous terminal for tracking memetic narratives
-              and token flows. Because information is the real asset.
-              Alpha doesn't sleep.
-            </p>
-          </div>
-
-          <div className="relative">
-            <div className="font-['Bebas_Neue'] text-[1.8rem] leading-none mb-2 text-foreground">AGORA</div>
-            <p className="text-[0.8rem] leading-[1.6] text-muted-foreground">
-              Anti-institutional talent platform.
-              Open competition, no gatekeepers.
-            </p>
-          </div>
-        </div>
-      </div>
 
     </div>
   );
