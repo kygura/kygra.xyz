@@ -3,6 +3,6 @@
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "functions": {
-    "api/notion-webhook.js": { "runtime": "nodejs20.x" }
+    "api/sync-notion.js": { "runtime": "nodejs20.x" }
   }
 }

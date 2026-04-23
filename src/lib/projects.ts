@@ -124,7 +124,10 @@ export const projects: Project[] = [
       "Built to support serious long-form drafting workflows",
     ],
     techStack: ["React", "TypeScript", "LLM Orchestration", "Editorial UX"],
-    links: [{ label: "Open dossier", href: "/projects/lexis-editorial-companion" }],
+    links: [
+      { label: "Open dossier", href: "/projects/lexis-editorial-companion" },
+      { label: "Live demo", href: "https://lexis-main.vercel.app/" },
+    ],
     palette: "lexis",
     layout: "wide",
     status: "Concept study",

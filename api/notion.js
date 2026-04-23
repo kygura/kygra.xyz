@@ -152,7 +152,7 @@ function getPageId(payload) {
 }
 
 function logBackgroundError(error) {
-  console.error("notion-webhook background job failed", error);
+  console.error("sync-notion background job failed", error);
 }
 
 function enqueueBackgroundJob(job) {
@@ -172,7 +172,7 @@ async function fetchGitHubFile(path) {
     headers: {
       Authorization: `Bearer ${GITHUB_TOKEN}`,
       Accept: "application/vnd.github+json",
-      "User-Agent": "kygra-notion-webhook",
+      "User-Agent": "kygra-sync-notion",
     },
   });
 
@@ -203,7 +203,7 @@ async function upsertGitHubFile(path, content, title) {
       Authorization: `Bearer ${GITHUB_TOKEN}`,
       Accept: "application/vnd.github+json",
       "Content-Type": "application/json",
-      "User-Agent": "kygra-notion-webhook",
+      "User-Agent": "kygra-sync-notion",
     },
     body: JSON.stringify({
       message: `publish: ${title}`,
@@ -231,7 +231,7 @@ async function deleteGitHubFile(path, slug) {
       Authorization: `Bearer ${GITHUB_TOKEN}`,
       Accept: "application/vnd.github+json",
       "Content-Type": "application/json",
-      "User-Agent": "kygra-notion-webhook",
+      "User-Agent": "kygra-sync-notion",
     },
     body: JSON.stringify({
       message: `unpublish: ${slug}`,
