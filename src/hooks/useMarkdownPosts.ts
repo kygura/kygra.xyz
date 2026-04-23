@@ -14,6 +14,11 @@ export interface Post {
 // Simple frontmatter parser (browser-compatible)
 type FrontmatterValue = string | string[];
 
+function getFrontmatterString(data: Record<string, FrontmatterValue>, key: string, fallback = "") {
+  const value = data[key];
+  return typeof value === "string" ? value : fallback;
+}
+
 function parseFrontmatter(text: string) {
   const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
   const match = text.match(frontmatterRegex);
@@ -72,10 +77,10 @@ export const useMarkdownPosts = () => {
 
       parsedPosts.push({
         slug: filename,
-        title: data.title || "",
-        excerpt: data.description || data.excerpt || "", // Fallback to description if excerpt missing
-        date: data.date || "2023-01-01",
-        category: data.category || "General",
+        title: getFrontmatterString(data, "title"),
+        excerpt: getFrontmatterString(data, "description") || getFrontmatterString(data, "excerpt"), // Fallback to description if excerpt missing
+        date: getFrontmatterString(data, "date", "2023-01-01"),
+        category: getFrontmatterString(data, "category", "General"),
         tags: Array.isArray(data.tags) ? data.tags : [],
         content: markdownContent,
         readTime: Number(data.readTime) || 10,

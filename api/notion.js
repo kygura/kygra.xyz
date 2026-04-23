@@ -192,8 +192,42 @@ function enqueueBackgroundJob(job) {
   }
 }
 
+function getGitHubRepoParts() {
+  const repoValue = String(GITHUB_REPO ?? "").trim().replace(/^\/+|\/+$/g, "");
+  const [repoOwner, repoName, ...rest] = repoValue.split("/").filter(Boolean);
+
+  if (rest.length > 0) {
+    return { owner: "", repo: "" };
+  }
+
+  if (repoOwner && repoName) {
+    return { owner: repoOwner, repo: repoName };
+  }
+
+  return {
+    owner: String(GITHUB_OWNER ?? "").trim(),
+    repo: repoOwner ?? "",
+  };
+}
+
+function buildGitHubContentsUrl(path, branch = null) {
+  const { owner, repo } = getGitHubRepoParts();
+  const normalizedPath = String(path ?? "")
+    .split("/")
+    .filter(Boolean)
+    .map((segment) => encodeURIComponent(segment))
+    .join("/");
+  const url = new URL(`https://api.github.com/repos/${owner}/${repo}/contents/${normalizedPath}`);
+
+  if (branch) {
+    url.searchParams.set("ref", branch);
+  }
+
+  return url.toString();
+}
+
 async function fetchGitHubFile(path) {
-  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(GITHUB_BRANCH)}`;
+  const url = buildGitHubContentsUrl(path, GITHUB_BRANCH);
   const response = await fetch(url, {
     headers: {
       Authorization: `Bearer ${GITHUB_TOKEN}`,
@@ -223,7 +257,7 @@ async function upsertGitHubFile(path, content, title) {
     return;
   }
 
-  const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${encodeURIComponent(path)}`, {
+  const response = await fetch(buildGitHubContentsUrl(path), {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${GITHUB_TOKEN}`,
@@ -251,7 +285,7 @@ async function deleteGitHubFile(path, slug) {
     return;
   }
 
-  const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${encodeURIComponent(path)}`, {
+  const response = await fetch(buildGitHubContentsUrl(path), {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${GITHUB_TOKEN}`,
@@ -273,16 +307,23 @@ async function deleteGitHubFile(path, slug) {
 }
 
 function validateEnv() {
+  const { owner, repo } = getGitHubRepoParts();
   const required = [
     ["NOTION_SECRET", NOTION_SECRET],
     ["NOTION_DATABASE_ID", NOTION_DATABASE_ID],
     ["GITHUB_TOKEN", GITHUB_TOKEN],
+    ["GITHUB_REPO", GITHUB_REPO],
+    ["GITHUB_BRANCH", GITHUB_BRANCH],
     ["WEBHOOK_SECRET", WEBHOOK_SECRET],
   ];
 
   const missing = required.filter(([, value]) => !value).map(([name]) => name);
   if (missing.length) {
     throw new Error(`Missing required environment variables: ${missing.join(", ")}`);
+  }
+
+  if (!owner || !repo) {
+    throw new Error("Invalid GitHub repository configuration: set GITHUB_REPO to 'owner/repo' or provide GITHUB_OWNER with a repo name.");
   }
 }
 
