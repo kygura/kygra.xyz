@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { useCallback, useEffect, useState } from "react";
+import { hasSupabaseConfig, supabase } from "@/lib/supabase";
 import { GuestbookEntry } from "@/components/GuestbookEntry";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { AutosizeTextarea } from "@/components/ui/autosize-textarea";
 import { useToast } from "@/hooks/use-toast";
-import Footer from "@/components/Footer";
 import { Loader2, SendHorizontal, ArrowDown } from "lucide-react";
+
+
 
 interface Entry {
   id: string;
@@ -17,6 +18,7 @@ interface Entry {
 }
 
 const PAGE_SIZE = 12;
+const MAX_CHARS = 280;
 
 const Guestbook = () => {
   const [entries, setEntries] = useState<Entry[]>([]);
@@ -28,10 +30,19 @@ const Guestbook = () => {
   const [message, setMessage] = useState("");
   const [cooldown, setCooldown] = useState(false);
   const { toast } = useToast();
+  const guestbookAvailable = hasSupabaseConfig && supabase;
 
-  const fetchEntries = async (offset = 0) => {
+  const fetchEntries = useCallback(async (offset = 0) => {
+    if (!guestbookAvailable) {
+      setEntries([]);
+      setHasMore(false);
+      setLoading(false);
+      setLoadingMore(false);
+      return;
+    }
+
     try {
-      const { data, error } = await supabase
+      const { data, error } = await guestbookAvailable
         .from('guestbook')
         .select('*')
         .order('created_at', { ascending: false })
@@ -61,7 +72,7 @@ const Guestbook = () => {
       setLoading(false);
       setLoadingMore(false);
     }
-  };
+  }, [guestbookAvailable, toast]);
 
   const loadMore = () => {
     setLoadingMore(true);
@@ -69,14 +80,18 @@ const Guestbook = () => {
   };
 
   useEffect(() => {
+    if (!guestbookAvailable) {
+      setLoading(false);
+      setHasMore(false);
+      return;
+    }
+
     fetchEntries();
 
-    // Set up realtime subscription
-    const channel = supabase
+    const channel = guestbookAvailable
       .channel('public:guestbook')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'guestbook' }, (payload) => {
         setEntries((current) => {
-          // Check if entry already exists to prevent duplicates from overlapping fetches/subscription
           if (current.some(e => e.id === payload.new.id)) return current;
           return [payload.new as Entry, ...current];
         });
@@ -84,12 +99,21 @@ const Guestbook = () => {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      guestbookAvailable.removeChannel(channel);
     };
-  }, []);
+  }, [fetchEntries, guestbookAvailable]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!guestbookAvailable) {
+      toast({
+        title: "Guestbook unavailable",
+        description: "Guestbook posting is disabled until Supabase is configured.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     if (!message.trim()) {
       toast({
@@ -112,7 +136,7 @@ const Guestbook = () => {
     setSubmitting(true);
 
     try {
-      const { error } = await supabase
+      const { error } = await guestbookAvailable
         .from('guestbook')
         .insert([
           {
@@ -152,37 +176,54 @@ const Guestbook = () => {
         </h1>
 
         <p className="text-lg font-light text-muted-foreground mb-8">
-          Leave a mark, say hello, or just let me know you were here.
+          Leave a mark here.
         </p>
+
+        {!guestbookAvailable && (
+          <Card className="mb-6 border-dashed border-muted bg-card/30 shadow-sm">
+            <CardContent className="py-4 text-sm text-muted-foreground">
+              The guestbook is temporarily unavailable because Supabase credentials are not configured for this environment.
+            </CardContent>
+          </Card>
+        )}
 
         <Card className="mb-12 border-muted bg-card/40 shadow-sm">
           <CardContent className="pt-4 pb-4">
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <div className="flex gap-3">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <Input
                   placeholder="Name (optional)"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="bg-background/50 border-muted w-1/3"
+                  disabled={!guestbookAvailable}
+                  className="bg-background/50 border-muted sm:max-w-xs"
                 />
-                <Textarea
+              </div>
+              <div className="relative">
+                <AutosizeTextarea
                   placeholder="Leave a message..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  style={{ height: '2.5rem', minHeight: '2.5rem' }}
-                  className="flex-1 bg-background/50 border-muted resize-y"
+                  maxLength={MAX_CHARS}
+                  minRows={3}
+                  maxRows={8}
+                  disabled={!guestbookAvailable}
+                  className="w-full bg-background/50 border-muted pb-8 resize-none"
                 />
+                <span className="absolute bottom-2 right-3 text-[10px] text-muted-foreground pointer-events-none select-none">
+                  {message.length}/{MAX_CHARS}
+                </span>
+              </div>
+              <div className="flex justify-end pt-2">
                 <Button
                   type="submit"
-                  disabled={submitting || cooldown || !message.trim()}
-                  variant="secondary"
-                  size="icon"
-                  className="shrink-0"
+                  disabled={!guestbookAvailable || submitting || cooldown || !message.trim()}
+                  className="w-full sm:w-auto px-8"
                 >
                   {submitting ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Publishing...</>
                   ) : (
-                    <SendHorizontal className="h-4 w-4" />
+                    <><SendHorizontal className="mr-2 h-4 w-4" /> Post Entry</>
                   )}
                 </Button>
               </div>
@@ -227,7 +268,7 @@ const Guestbook = () => {
             </>
           ) : (
             <div className="text-center py-12 text-muted-foreground border border-dashed border-muted rounded-lg bg-card/20">
-              <p>No entries yet. Be the first to sign!</p>
+              <p>No entries yet.</p>
             </div>
           )}
         </div>

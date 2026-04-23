@@ -1,14 +1,12 @@
 import { NavLink } from "@/components/NavLink";
-import ThemeToggle from "./ThemeToggle";
 
 const Navigation = () => {
   const navItems = [
     { path: "/", label: "Home" },
     { path: "/writings", label: "Writings" },
     { path: "/projects", label: "Software" },
-    { path: "/artifacts", label: "Artifacts" },
     { path: "/guestbook", label: "Guestbook" },
-    ...(import.meta.env.VITE_SHOW_CV === "true" ? [{ path: "/cv", label: "CV" }] : []),
+    { path: "/cv", label: "CV" }
   ];
 
   return (
@@ -20,16 +18,14 @@ const Navigation = () => {
               <NavLink
                 to={item.path}
                 end={item.path === "/"}
-                className="nav-link text-muted-foreground relative group transition-colors duration-300 hover:text-primary no-underline"
-                activeClassName="active text-foreground"
+                className="px-4 py-1.5 transition-colors duration-200 uppercase whitespace-nowrap text-foreground hover:bg-foreground hover:text-background no-underline"
+                activeClassName="!bg-foreground !text-background"
               >
                 {item.label}
-                <span className="absolute left-0 bottom-0 w-full h-[2px] bg-gradient-to-r from-primary/80 to-primary origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100" />
               </NavLink>
             </li>
           ))}
         </ul>
-        <ThemeToggle />
       </div>
     </nav>
   );

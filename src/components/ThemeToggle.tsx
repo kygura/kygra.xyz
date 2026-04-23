@@ -1,6 +1,6 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { Sun, Moon } from "lucide-react"; // Importing Sun and Moon icons from lucide-react
+import { Sun, Moon } from "lucide-react"; 
 
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
