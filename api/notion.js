@@ -328,28 +328,13 @@ export default async function handler(req, res) {
 
   try {
     const rawBody = await getRawBody(req);
-    const payload = rawBody ? JSON.parse(rawBody) : {};
-
-    // Quick hack: capture Notion's verification_token during webhook setup.
-    // Notion sends a POST with { verification_token: "secret_..." } and expects 200.
-    // Log it and return it so we can paste it into the Notion verification modal,
-    // then set it as WEBHOOK_SECRET for future signature validation.
-    if (payload.verification_token) {
-      console.log("=== NOTION VERIFICATION TOKEN ===");
-      console.log(payload.verification_token);
-      console.log("=================================");
-      return sendJson(res, 200, {
-        ok: true,
-        verification_token: payload.verification_token,
-      });
-    }
-
     const signature = getHeader(req, "x-notion-signature");
 
     if (!verifySignature(rawBody, signature)) {
       return sendJson(res, 401, { error: "Invalid signature" });
     }
 
+    const payload = rawBody ? JSON.parse(rawBody) : {};
     enqueueBackgroundJob(processWebhook(payload));
     return sendJson(res, 200, { ok: true });
   } catch (error) {
