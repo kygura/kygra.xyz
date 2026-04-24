@@ -6,7 +6,7 @@ import { useMarkdownPosts } from "../hooks/useMarkdownPosts";
 const Writings = () => {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
-  const posts = useMarkdownPosts();
+  const { posts, loading, error } = useMarkdownPosts();
 
   const allTags = Array.from(new Set(posts.flatMap((post) => post.tags)));
 
@@ -42,6 +42,18 @@ const Writings = () => {
           </button>
         ))}
       </div>
+
+      {loading && (
+        <div className="border-2 border-dashed border-foreground/30 px-6 py-8 text-sm uppercase tracking-[0.2em] text-muted-foreground">
+          Loading writings...
+        </div>
+      )}
+
+      {error && !loading && (
+        <div className="border-2 border-destructive px-6 py-8 text-sm uppercase tracking-[0.2em] text-destructive">
+          {error}
+        </div>
+      )}
 
       <div className="space-y-16">
         {filteredPosts.map((post, index) => (
@@ -88,6 +100,12 @@ const Writings = () => {
             </Link>
           </article>
         ))}
+
+        {!loading && !error && filteredPosts.length === 0 && (
+          <div className="border-2 border-dashed border-foreground/30 px-6 py-8 text-sm uppercase tracking-[0.2em] text-muted-foreground">
+            No writings found.
+          </div>
+        )}
       </div>
     </div>
   );

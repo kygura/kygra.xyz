@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 
 export interface Post {
   slug: string;
@@ -11,92 +11,142 @@ export interface Post {
   readTime: number;
 }
 
-// Simple frontmatter parser (browser-compatible)
-type FrontmatterValue = string | string[];
-
-function getFrontmatterString(data: Record<string, FrontmatterValue>, key: string, fallback = "") {
-  const value = data[key];
-  return typeof value === "string" ? value : fallback;
+interface PostListItem extends Omit<Post, "content"> {
+  content?: string;
 }
 
-function parseFrontmatter(text: string) {
-  const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
-  const match = text.match(frontmatterRegex);
-  
-  if (!match) {
-    return { data: {}, content: text };
-  }
+interface UsePostsResult {
+  posts: Post[];
+  loading: boolean;
+  error: string | null;
+}
 
-  const frontmatter = match[1];
-  const content = match[2];
-  
-  const data: Record<string, FrontmatterValue> = {};
-  
-  // Parse YAML-like frontmatter
-  frontmatter.split('\n').forEach(line => {
-    const colonIndex = line.indexOf(':');
-    if (colonIndex > 0) {
-      const key = line.substring(0, colonIndex).trim();
-      let value: FrontmatterValue = line.substring(colonIndex + 1).trim();
-      
-      // Remove quotes
-      value = value.replace(/^["']|["']$/g, '');
-      
-      // Parse arrays
-      if (value.startsWith('[') && value.endsWith(']')) {
-        value = value
-          .slice(1, -1)
-          .split(',')
-          .map((v) => v.trim().replace(/^["']|["']$/g, ''));
+interface UsePostResult {
+  post: Post | null;
+  loading: boolean;
+  error: string | null;
+}
+
+function normalizePost(post: PostListItem): Post {
+  return {
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt,
+    date: post.date,
+    category: post.category,
+    tags: Array.isArray(post.tags) ? post.tags : [],
+    content: post.content ?? "",
+    readTime: Number(post.readTime) || 10,
+  };
+}
+
+export const useMarkdownPosts = (): UsePostsResult => {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadPosts() {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch("/api/posts");
+        if (!response.ok) {
+          throw new Error(`Failed to load posts (${response.status})`);
+        }
+
+        const data = (await response.json()) as PostListItem[];
+        if (cancelled) {
+          return;
+        }
+
+        const sortedPosts = data
+          .map(normalizePost)
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+        setPosts(sortedPosts);
+      } catch (caughtError) {
+        if (cancelled) {
+          return;
+        }
+
+        setPosts([]);
+        setError(caughtError instanceof Error ? caughtError.message : "Failed to load posts");
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
-      
-      data[key] = value;
-    }
-  });
-  
-  return { data, content };
-}
-
-export const useMarkdownPosts = () => {
-  const posts = useMemo(() => {
-    // Import all markdown files from the posts directory
-    const markdownFiles = import.meta.glob<string>("../posts/*.md", {
-      eager: true,
-      query: "?raw",
-      import: "default",
-    });
-
-    const parsedPosts: Post[] = [];
-
-    for (const [path, content] of Object.entries(markdownFiles)) {
-      // Extract filename without extension to use as slug
-      const filename = path.split("/").pop()?.replace(".md", "") || "";
-      
-      // Parse frontmatter and content
-      const { data, content: markdownContent } = parseFrontmatter(content);
-
-      parsedPosts.push({
-        slug: filename,
-        title: getFrontmatterString(data, "title"),
-        excerpt: getFrontmatterString(data, "description") || getFrontmatterString(data, "excerpt"), // Fallback to description if excerpt missing
-        date: getFrontmatterString(data, "date", "2023-01-01"),
-        category: getFrontmatterString(data, "category", "General"),
-        tags: Array.isArray(data.tags) ? data.tags : [],
-        content: markdownContent,
-        readTime: Number(data.readTime) || 10,
-      });
     }
 
-    // Sort posts by date (newest first)
-    return parsedPosts.sort((a, b) => 
-      new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
+    void loadPosts();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  return posts;
+  return { posts, loading, error };
 };
 
-export const useMarkdownPost = (slug: string | undefined) => {
-  const posts = useMarkdownPosts();
-  return posts.find((post) => post.slug === slug);
+export const useMarkdownPost = (slug: string | undefined): UsePostResult => {
+  const [post, setPost] = useState<Post | null>(null);
+  const [loading, setLoading] = useState(Boolean(slug));
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadPost() {
+      if (!slug) {
+        setPost(null);
+        setLoading(false);
+        setError(null);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch(`/api/post/${encodeURIComponent(slug)}`);
+
+        if (response.status === 404) {
+          if (!cancelled) {
+            setPost(null);
+          }
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error(`Failed to load post (${response.status})`);
+        }
+
+        const data = (await response.json()) as Post;
+        if (!cancelled) {
+          setPost(normalizePost(data));
+        }
+      } catch (caughtError) {
+        if (!cancelled) {
+          setPost(null);
+          setError(caughtError instanceof Error ? caughtError.message : "Failed to load post");
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadPost();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
+
+  return { post, loading, error };
 };

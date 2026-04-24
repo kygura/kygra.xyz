@@ -1,426 +1,178 @@
 import crypto from "node:crypto";
 import { Client } from "@notionhq/client";
+import { del, put } from "@vercel/blob";
 import { NotionToMarkdown } from "notion-to-md";
-import { waitUntil } from "@vercel/functions";
+import { fetchPostFromBlob, normalizeSlug } from "./_lib/posts.js";
 
-const {
-  NOTION_SECRET,
-  NOTION_DATABASE_ID,
-  GITHUB_TOKEN,
-  GITHUB_OWNER  ,
-  GITHUB_REPO   ,
-  GITHUB_BRANCH ,
-  WEBHOOK_SECRET,
-} = process.env;
+const notion = new Client({ auth: process.env.NOTION_SECRET });
+const n2m = new NotionToMarkdown({ notionClient: notion });
 
-const notion = NOTION_SECRET ? new Client({ auth: NOTION_SECRET }) : null;
-const n2m = notion ? new NotionToMarkdown({ notionClient: notion }) : null;
-
-function getHeader(req, name) {
-  const value = req.headers?.[name] ?? req.headers?.[name.toLowerCase()];
-  return Array.isArray(value) ? value[0] : value;
+function getHeaderValue(headers, name) {
+  const header = headers?.[name] ?? headers?.[name.toLowerCase()];
+  return Array.isArray(header) ? header[0] : header;
 }
 
-function sendJson(res, statusCode, body) {
-  res.status(statusCode).setHeader("Content-Type", "application/json");
-  res.end(JSON.stringify(body));
+function safeString(value) {
+  return String(value ?? "").replace(/"/g, '\\"');
 }
 
-function tryParseJson(value) {
-  if (!value) return null;
+function extractTitle(property) {
+  return property?.title?.map((item) => item.plain_text).join("").trim() ?? "";
+}
 
-  try {
-    return JSON.parse(value);
-  } catch {
-    return null;
+function extractRichText(property) {
+  return property?.rich_text?.map((item) => item.plain_text).join("").trim() ?? "";
+}
+
+function extractSelect(property) {
+  return property?.select?.name ?? "";
+}
+
+function extractMultiSelect(property) {
+  return property?.multi_select?.map((item) => item.name).filter(Boolean) ?? [];
+}
+
+function extractNumber(property) {
+  return typeof property?.number === "number" ? property.number : 0;
+}
+
+function extractCheckbox(property) {
+  return Boolean(property?.checkbox);
+}
+
+function extractDate(property) {
+  return property?.date?.start ?? "";
+}
+
+function extractSlug(properties, title) {
+  const explicitSlug =
+    extractRichText(properties?.Slug) ||
+    extractRichText(properties?.slug) ||
+    extractTitle(properties?.Slug) ||
+    extractTitle(properties?.slug);
+
+  return normalizeSlug(explicitSlug || title);
+}
+
+async function readRawBody(request) {
+  if (typeof request.body === "string") {
+    return request.body;
   }
-}
 
-function getRawBody(req) {
-  return new Promise((resolve, reject) => {
-    const chunks = [];
-    req.on("data", (chunk) => chunks.push(Buffer.from(chunk)));
-    req.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
-    req.on("error", reject);
+  if (request.body && typeof request.body === "object" && !(request.body instanceof Buffer)) {
+    return JSON.stringify(request.body);
+  }
+
+  return await new Promise((resolve, reject) => {
+    let body = "";
+    request.on("data", (chunk) => {
+      body += chunk;
+    });
+    request.on("end", () => resolve(body));
+    request.on("error", reject);
   });
 }
 
-function escapeYamlString(value) {
-  return String(value ?? "")
-    .replace(/\\/g, "\\\\")
-    .replace(/"/g, '\\"')
-    .replace(/\r?\n/g, " ");
-}
-
-function slugify(value) {
-  return String(value ?? "")
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
-}
-
-function extractPlainText(property) {
-  if (!property) return "";
-
-  if (property.type === "title") {
-    return property.title.map((item) => item.plain_text).join("").trim();
-  }
-
-  if (property.type === "rich_text") {
-    return property.rich_text.map((item) => item.plain_text).join("").trim();
-  }
-
-  return "";
-}
-
-function getProperty(page, name, type) {
-  const property = page.properties?.[name];
-  return property?.type === type ? property : null;
-}
-
-function getDateValue(page) {
-  return getProperty(page, "Date", "date")?.date?.start?.slice(0, 10) ?? "";
-}
-
-function getSelectValue(page, name) {
-  return getProperty(page, name, "select")?.select?.name ?? "";
-}
-
-function getTagsValue(page) {
-  return getProperty(page, "Tags", "multi_select")?.multi_select?.map((tag) => tag.name) ?? [];
-}
-
-function getNumberValue(page, name) {
-  return getProperty(page, name, "number")?.number ?? 0;
-}
-
-function getCheckboxValue(page, name) {
-  return getProperty(page, name, "checkbox")?.checkbox ?? false;
-}
-
-function getSlug(page, title) {
-  const slugProperty =
-    getProperty(page, "Slug", "rich_text") ??
-    getProperty(page, "Slug", "title") ??
-    getProperty(page, "Slug", "formula");
-
-  let slugValue = "";
-
-  if (slugProperty?.type === "formula") {
-    const formula = slugProperty.formula;
-    if (formula.type === "string") {
-      slugValue = formula.string ?? "";
-    }
-  } else {
-    slugValue = extractPlainText(slugProperty);
-  }
-
-  return slugify(slugValue || title);
-}
-
-function buildMarkdownFile(frontmatter, body) {
-  const tags = frontmatter.tags.join(", ");
-  return `---
-title: "${escapeYamlString(frontmatter.title)}"
-description: "${escapeYamlString(frontmatter.description)}"
-date: "${escapeYamlString(frontmatter.date)}"
-type: "${escapeYamlString(frontmatter.type)}"
-category: "${escapeYamlString(frontmatter.category)}"
-tags: [${tags}]
-readTime: ${frontmatter.readTime}
----
-
-${body.trim()}
-`;
-}
-
-function verifySignature(rawBody, signature) {
-  if (!WEBHOOK_SECRET || !signature) return false;
-
-  const expected = crypto
-    .createHmac("sha256", WEBHOOK_SECRET)
-    .update(rawBody)
-    .digest("hex");
-
-  const normalized = signature.replace(/^sha256=/, "");
-  const expectedBuffer = Buffer.from(expected, "utf8");
-  const receivedBuffer = Buffer.from(normalized, "utf8");
-
-  if (expectedBuffer.length !== receivedBuffer.length) {
+function verifySignature(rawBody, signature, secret) {
+  if (!signature || !secret) {
     return false;
   }
 
-  return crypto.timingSafeEqual(expectedBuffer, receivedBuffer);
-}
-
-function getIncomingSecret(req, rawBody = "") {
-  const parsedBody = tryParseJson(rawBody);
-  const candidates = [
-    getHeader(req, "x-notion-secret"),
-    getHeader(req, "x-webhook-secret"),
-    getHeader(req, "authorization"),
-    req.query?.secret,
-    req.query?.token,
-    parsedBody?.secret,
-    parsedBody?.token,
-    parsedBody?.webhook_secret,
-  ].filter(Boolean);
-
-  return candidates[0] ?? null;
-}
-
-function getPageId(payload) {
-  return payload?.entity?.id ?? payload?.page?.id ?? null;
-}
-
-function logBackgroundError(error) {
-  console.error("sync-notion background job failed", error);
-}
-
-function enqueueBackgroundJob(job) {
-  const guardedJob = Promise.resolve(job).catch(logBackgroundError);
+  const expected = crypto.createHmac("sha256", secret).update(rawBody).digest("hex");
 
   try {
-    waitUntil(guardedJob);
-    return;
+    return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
   } catch {
-    guardedJob.catch(() => {});
+    return false;
   }
 }
 
-function getGitHubRepoParts() {
-  const repoValue = String(GITHUB_REPO ?? "").trim().replace(/^\/+|\/+$/g, "");
-  const [repoOwner, repoName, ...rest] = repoValue.split("/").filter(Boolean);
-
-  if (rest.length > 0) {
-    return { owner: "", repo: "" };
-  }
-
-  if (repoOwner && repoName) {
-    return { owner: repoOwner, repo: repoName };
-  }
-
-  return {
-    owner: String(GITHUB_OWNER ?? "").trim(),
-    repo: repoOwner ?? "",
-  };
-}
-
-function buildGitHubContentsUrl(path, branch = null) {
-  const { owner, repo } = getGitHubRepoParts();
-  const normalizedPath = String(path ?? "")
-    .split("/")
-    .filter(Boolean)
-    .map((segment) => encodeURIComponent(segment))
-    .join("/");
-  const url = new URL(`https://api.github.com/repos/${owner}/${repo}/contents/${normalizedPath}`);
-
-  if (branch) {
-    url.searchParams.set("ref", branch);
-  }
-
-  return url.toString();
-}
-
-async function fetchGitHubFile(path) {
-  const url = buildGitHubContentsUrl(path, GITHUB_BRANCH);
-  const response = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
-      Accept: "application/vnd.github+json",
-      "User-Agent": "kygra-sync-notion",
-    },
-  });
-
-  if (response.status === 404) {
-    return null;
-  }
-
-  if (!response.ok) {
-    throw new Error(`GitHub file lookup failed: ${response.status} ${response.statusText}`);
-  }
-
-  const data = await response.json();
-  return {
-    sha: data.sha,
-    content: data.content ? Buffer.from(data.content, "base64").toString("utf8") : "",
-  };
-}
-
-async function upsertGitHubFile(path, content, title) {
-  const existingFile = await fetchGitHubFile(path);
-  if (existingFile?.content === content) {
-    return;
-  }
-
-  const response = await fetch(buildGitHubContentsUrl(path), {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
-      Accept: "application/vnd.github+json",
-      "Content-Type": "application/json",
-      "User-Agent": "kygra-sync-notion",
-    },
-    body: JSON.stringify({
-      message: `publish: ${title}`,
-      content: Buffer.from(content, "utf8").toString("base64"),
-      branch: GITHUB_BRANCH,
-      ...(existingFile?.sha ? { sha: existingFile.sha } : {}),
-    }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`GitHub publish failed: ${response.status} ${errorText}`);
+async function deletePostBlob(slug) {
+  const existingPost = await fetchPostFromBlob(`posts/${slug}.md`);
+  if (existingPost) {
+    await del(existingPost.blob.url);
   }
 }
 
-async function deleteGitHubFile(path, slug) {
-  const existingFile = await fetchGitHubFile(path);
-  if (!existingFile?.sha) {
-    return;
-  }
-
-  const response = await fetch(buildGitHubContentsUrl(path), {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
-      Accept: "application/vnd.github+json",
-      "Content-Type": "application/json",
-      "User-Agent": "kygra-sync-notion",
-    },
-    body: JSON.stringify({
-      message: `unpublish: ${slug}`,
-      sha: existingFile.sha,
-      branch: GITHUB_BRANCH,
-    }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`GitHub delete failed: ${response.status} ${errorText}`);
-  }
-}
-
-function validateEnv() {
-  const { owner, repo } = getGitHubRepoParts();
-  const required = [
-    ["NOTION_SECRET", NOTION_SECRET],
-    ["NOTION_DATABASE_ID", NOTION_DATABASE_ID],
-    ["GITHUB_TOKEN", GITHUB_TOKEN],
-    ["GITHUB_REPO", GITHUB_REPO],
-    ["GITHUB_BRANCH", GITHUB_BRANCH],
-    ["WEBHOOK_SECRET", WEBHOOK_SECRET],
-  ];
-
-  const missing = required.filter(([, value]) => !value).map(([name]) => name);
-  if (missing.length) {
-    throw new Error(`Missing required environment variables: ${missing.join(", ")}`);
-  }
-
-  if (!owner || !repo) {
-    throw new Error("Invalid GitHub repository configuration: set GITHUB_REPO to 'owner/repo' or provide GITHUB_OWNER with a repo name.");
-  }
-}
-
-async function processWebhook(payload) {
-  validateEnv();
-
-  const pageId = getPageId(payload);
-  if (!pageId) {
-    return;
-  }
-
+async function syncNotionPage(pageId) {
   const page = await notion.pages.retrieve({ page_id: pageId });
+  const properties = page.properties ?? {};
 
-  const parentDatabaseId = page.parent?.type === "database_id" ? page.parent.database_id : null;
-  if (NOTION_DATABASE_ID && parentDatabaseId && parentDatabaseId !== NOTION_DATABASE_ID) {
-    return;
+  const title = extractTitle(properties.Title ?? properties.Name ?? properties.title);
+  const slug = extractSlug(properties, title || pageId);
+  const published = extractCheckbox(properties.Published ?? properties.published);
+
+  if (!published) {
+    await deletePostBlob(slug);
+    return { slug, published: false };
   }
 
-  const title = extractPlainText(getProperty(page, "Title", "title"));
-  const description = extractPlainText(getProperty(page, "Description", "rich_text"));
-  const date = getDateValue(page);
-  const type = getSelectValue(page, "Type");
-  const category = getSelectValue(page, "Category");
-  const tags = getTagsValue(page);
-  const readTime = getNumberValue(page, "Read Time");
-  const slug = getSlug(page, title);
-  const postPath = `src/posts/${slug}.md`;
-  const isPublished = getCheckboxValue(page, "Published");
+  const description = extractRichText(properties.Description ?? properties.description);
+  const date = extractDate(properties.Date ?? properties.date);
+  const type = extractSelect(properties.Type ?? properties.type);
+  const category = extractSelect(properties.Category ?? properties.category);
+  const tags = extractMultiSelect(properties.Tags ?? properties.tags);
+  const readTime = extractNumber(properties["Read Time"] ?? properties.readTime ?? properties["Read time"]);
 
-  if (!isPublished) {
-    await deleteGitHubFile(postPath, slug);
-    return;
-  }
+  const markdownBlocks = await n2m.pageToMarkdown(pageId);
+  const markdownBody = n2m.toMarkdownString(markdownBlocks).parent ?? "";
+  const serializedTags = tags.join(", ");
 
-  const mdBlocks = await n2m.pageToMarkdown(pageId);
-  const body = n2m.toMarkdownString(mdBlocks);
-  const markdownContent = typeof body === "string" ? body : body.parent ?? "";
+  const markdownContent = `---
+title: "${safeString(title)}"
+description: "${safeString(description)}"
+date: "${safeString(date)}"
+type: "${safeString(type)}"
+category: "${safeString(category)}"
+tags: [${serializedTags}]
+readTime: ${readTime}
+---
 
-  const fileContent = buildMarkdownFile(
-    {
-      title,
-      description,
-      date,
-      type,
-      category,
-      tags,
-      readTime,
-    },
-    markdownContent,
-  );
+${markdownBody}
+`;
 
-  await upsertGitHubFile(postPath, fileContent, title);
+  await put(`posts/${slug}.md`, markdownContent, {
+    access: "public",
+    contentType: "text/markdown",
+    addRandomSuffix: false,
+  });
+
+  return { slug, published: true };
 }
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
-export default async function handler(req, res) {
-  if (req.method === "GET") {
-    return sendJson(res, 200, { challenge: req.query?.challenge ?? null });
+export default async function handler(request, response) {
+  if (request.method === "GET") {
+    const challenge = request.query?.challenge;
+    return response.status(200).json({ challenge });
   }
 
-  if (req.method !== "POST") {
-    return sendJson(res, 405, { error: "Method not allowed" });
+  if (request.method !== "POST") {
+    response.setHeader("Allow", "GET, POST");
+    return response.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    const rawBody = await getRawBody(req);
+    const rawBody = await readRawBody(request);
+    const signature = getHeaderValue(request.headers, "x-notion-signature");
+    const secret = process.env.WEBHOOK_SECRET;
+
+    if (!verifySignature(rawBody, signature, secret)) {
+      return response.status(401).json({ error: "Invalid signature" });
+    }
+
     const payload = rawBody ? JSON.parse(rawBody) : {};
+    const pageId = payload?.entity?.id ?? payload?.page?.id;
 
-    // Quick hack: capture Notion's verification_token during webhook setup.
-    // Notion sends a POST with { verification_token: "secret_..." } and expects 200.
-    // Log it and return it so we can paste it into the Notion verification modal,
-    // then set it as WEBHOOK_SECRET for future signature validation.
-    if (payload.verification_token) {
-      console.log("=== NOTION VERIFICATION TOKEN ===");
-      console.log(payload.verification_token);
-      console.log("=================================");
-      return sendJson(res, 200, {
-        ok: true,
-        verification_token: payload.verification_token,
-      });
+    if (!pageId) {
+      return response.status(200).json({ ok: true, skipped: true });
     }
 
-    const signature = getHeader(req, "x-notion-signature");
-
-    if (!verifySignature(rawBody, signature)) {
-      return sendJson(res, 401, { error: "Invalid signature" });
-    }
-
-    enqueueBackgroundJob(processWebhook(payload));
-    return sendJson(res, 200, { ok: true });
+    const result = await syncNotionPage(pageId);
+    return response.status(200).json({ ok: true, ...result });
   } catch (error) {
-    console.error(error);
-    return sendJson(res, 500, { error: error.message });
+    console.error("Failed to process Notion webhook", error);
+    return response.status(500).json({
+      error: error instanceof Error ? error.message : "Failed to process Notion webhook",
+    });
   }
 }

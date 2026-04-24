@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import ReactMarkdown from "react-markdown";
@@ -33,7 +33,27 @@ const alertTypes: Record<AlertType, AlertType> = {
 
 const Post = () => {
   const { slug } = useParams();
-  const post = useMarkdownPost(slug);
+  const { post, loading, error } = useMarkdownPost(slug);
+
+  if (loading) {
+    return (
+      <div className="px-6 md:px-12 lg:px-16 py-16 md:py-24 max-w-3xl mx-auto animate-fade-in">
+        <div className="border-2 border-dashed border-foreground/30 px-6 py-8 text-sm uppercase tracking-[0.2em] text-muted-foreground">
+          Loading post...
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="px-6 md:px-12 lg:px-16 py-16 md:py-24 max-w-3xl mx-auto animate-fade-in">
+        <div className="border-2 border-destructive px-6 py-8 text-sm uppercase tracking-[0.2em] text-destructive">
+          {error}
+        </div>
+      </div>
+    );
+  }
 
   // Handle post not found
   if (!post) {
