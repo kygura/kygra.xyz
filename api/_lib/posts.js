@@ -353,7 +353,9 @@ export async function deleteByPrefix(prefix) {
 export async function putPublicBlob(pathname, body, contentType) {
   await deletePathIfExists(pathname);
 
-  return put(pathname, body, {
+  const blobBody = typeof body === "string" ? Buffer.from(body, "utf8") : body;
+
+  return put(pathname, blobBody, {
     access: "public",
     addRandomSuffix: false,
     contentType,
