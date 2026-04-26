@@ -61,8 +61,6 @@ const Writings = () => {
             <Link to={`/writings/${post.slug}`} className="block group/link no-underline text-foreground">
               <header className="mb-4">
                 <div className="flex items-center gap-3 mb-3 text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                  <span className="text-destructive font-['Bebas_Neue'] text-[0.9rem] tracking-[0.2em]">{post.category}</span>
-                  <span>•</span>
                   <span>{new Date(post.date).getFullYear()}</span>
                 </div>
 

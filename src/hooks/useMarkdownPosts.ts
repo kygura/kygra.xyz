@@ -1,22 +1,8 @@
 import { useEffect, useState } from "react";
-
-export interface Post {
-  slug: string;
-  title: string;
-  excerpt: string;
-  date: string;
-  category: string;
-  tags: string[];
-  content: string;
-  readTime: number;
-}
-
-interface PostListItem extends Omit<Post, "content"> {
-  content?: string;
-}
+import type { Post, PostSummary } from "../../content/posts";
 
 interface UsePostsResult {
-  posts: Post[];
+  posts: PostSummary[];
   loading: boolean;
   error: string | null;
 }
@@ -27,21 +13,26 @@ interface UsePostResult {
   error: string | null;
 }
 
-function normalizePost(post: PostListItem): Post {
+function normalizePostSummary(post: PostSummary): PostSummary {
   return {
     slug: post.slug,
     title: post.title,
     excerpt: post.excerpt,
-    date: post.date,
-    category: post.category,
     tags: Array.isArray(post.tags) ? post.tags : [],
-    content: post.content ?? "",
+    date: post.date,
     readTime: Number(post.readTime) || 10,
   };
 }
 
+function normalizePost(post: Post): Post {
+  return {
+    ...normalizePostSummary(post),
+    content: post.content ?? "",
+  };
+}
+
 export const useMarkdownPosts = (): UsePostsResult => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -58,13 +49,13 @@ export const useMarkdownPosts = (): UsePostsResult => {
           throw new Error(`Failed to load posts (${response.status})`);
         }
 
-        const data = (await response.json()) as PostListItem[];
+        const data = (await response.json()) as PostSummary[];
         if (cancelled) {
           return;
         }
 
         const sortedPosts = data
-          .map(normalizePost)
+          .map(normalizePostSummary)
           .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
         setPosts(sortedPosts);

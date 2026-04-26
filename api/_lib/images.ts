@@ -1,12 +1,27 @@
 import crypto from "node:crypto";
 import sharp from "sharp";
-import { deleteByPrefix, deletePathIfExists, listBlobsByPrefix, putPublicBlob } from "./posts.js";
+import {
+  deleteByPrefix,
+  deletePathIfExists,
+  listBlobsByPrefix,
+  putPublicBlob,
+} from "./posts.ts";
 
 const MARKDOWN_IMAGE_REGEX = /!\[([^\]]*)\]\((\S+?)(?:\s+"([^"]*)")?\)/g;
 const MAX_IMAGE_WIDTH = 1600;
 
-function mimeToExtension(contentType) {
-  const mime = String(contentType ?? "").split(";")[0].trim().toLowerCase();
+export type PreparedImageAsset = {
+  sourceUrl: string;
+  pathname: string;
+  body: Buffer;
+  contentType: string;
+};
+
+function mimeToExtension(contentType: string | null): string {
+  const mime = String(contentType ?? "")
+    .split(";")[0]
+    .trim()
+    .toLowerCase();
 
   switch (mime) {
     case "image/jpeg":
@@ -26,8 +41,15 @@ function mimeToExtension(contentType) {
   }
 }
 
-export function extractMarkdownImageUrls(markdown) {
-  return Array.from(String(markdown ?? "").matchAll(MARKDOWN_IMAGE_REGEX)).map((match) => ({
+type MarkdownImageMatch = {
+  alt: string;
+  url: string;
+  title: string;
+  fullMatch: string;
+};
+
+export function extractMarkdownImageUrls(markdown: string): MarkdownImageMatch[] {
+  return Array.from(String(markdown).matchAll(MARKDOWN_IMAGE_REGEX)).map((match) => ({
     alt: match[1] ?? "",
     url: match[2] ?? "",
     title: match[3] ?? "",
@@ -35,7 +57,7 @@ export function extractMarkdownImageUrls(markdown) {
   }));
 }
 
-export function isNotionHostedImageUrl(url) {
+export function isNotionHostedImageUrl(url: string): boolean {
   try {
     const parsed = new URL(url);
     const hostname = parsed.hostname.toLowerCase();
@@ -51,7 +73,7 @@ export function isNotionHostedImageUrl(url) {
   }
 }
 
-export async function downloadRemoteImage(url) {
+async function downloadRemoteImage(url: string) {
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -64,7 +86,7 @@ export async function downloadRemoteImage(url) {
   };
 }
 
-export function inferImageExtension(url, contentType) {
+function inferImageExtension(url: string, contentType: string | null): string {
   const mimeExtension = mimeToExtension(contentType);
 
   if (mimeExtension) {
@@ -74,13 +96,14 @@ export function inferImageExtension(url, contentType) {
   try {
     const pathname = new URL(url).pathname;
     const extension = pathname.split(".").pop()?.toLowerCase() ?? "";
+
     return extension.replace(/[^a-z0-9]/g, "") || "jpg";
   } catch {
     return "jpg";
   }
 }
 
-export async function compressImage(buffer, contentType, sourceUrl) {
+async function compressImage(buffer: Buffer, contentType: string | null, sourceUrl: string) {
   const inputExtension = inferImageExtension(sourceUrl, contentType);
   const image = sharp(buffer, {
     animated: true,
@@ -88,7 +111,7 @@ export async function compressImage(buffer, contentType, sourceUrl) {
   });
   const metadata = await image.metadata();
 
-  if (metadata.format === "gif" || metadata.pages > 1) {
+  if (metadata.format === "gif" || (metadata.pages ?? 0) > 1) {
     return {
       buffer,
       contentType: contentType || "image/gif",
@@ -117,73 +140,94 @@ export async function compressImage(buffer, contentType, sourceUrl) {
 
   if (metadata.hasAlpha) {
     return {
-      buffer: await pipeline.png({
-        compressionLevel: 9,
-        palette: true,
-        quality: 80,
-      }).toBuffer(),
+      buffer: await pipeline
+        .png({
+          compressionLevel: 9,
+          palette: true,
+          quality: 80,
+        })
+        .toBuffer(),
       contentType: "image/png",
       extension: "png",
     };
   }
 
   return {
-    buffer: await pipeline.jpeg({
-      quality: 72,
-      mozjpeg: true,
-      progressive: true,
-    }).toBuffer(),
+    buffer: await pipeline
+      .jpeg({
+        quality: 72,
+        mozjpeg: true,
+        progressive: true,
+      })
+      .toBuffer(),
     contentType: "image/jpeg",
     extension: "jpg",
   };
 }
 
-export function buildImageBlobPath(postSlug, imageBuffer, extension) {
+function buildImageBlobPath(postSlug: string, imageBuffer: Buffer, extension: string): string {
   const digest = crypto.createHash("sha1").update(imageBuffer).digest("hex").slice(0, 16);
   return `images/${postSlug}/${digest}.${extension}`;
 }
 
-export function rewriteMarkdownImageUrls(markdown, replacements) {
-  return String(markdown ?? "").replace(MARKDOWN_IMAGE_REGEX, (fullMatch, alt, url, title = "") => {
-    const replacementUrl = replacements.get(url);
+function rewriteMarkdownImageUrls(markdown: string, replacements: Map<string, string>): string {
+  return String(markdown).replace(
+    MARKDOWN_IMAGE_REGEX,
+    (fullMatch, alt, url, title = "") => {
+      const replacementUrl = replacements.get(url);
 
-    if (!replacementUrl) {
-      return fullMatch;
-    }
+      if (!replacementUrl) {
+        return fullMatch;
+      }
 
-    if (title) {
-      return `![${alt}](${replacementUrl} "${title}")`;
-    }
+      if (title) {
+        return `![${alt}](${replacementUrl} "${title}")`;
+      }
 
-    return `![${alt}](${replacementUrl})`;
-  });
+      return `![${alt}](${replacementUrl})`;
+    },
+  );
 }
 
-export async function syncMarkdownImagesToBlob(markdown, { postSlug }) {
+export async function prepareMarkdownImageAssets(
+  markdown: string,
+  { postSlug }: { postSlug: string },
+): Promise<PreparedImageAsset[]> {
   const matches = extractMarkdownImageUrls(markdown);
   const sourceUrls = [...new Set(matches.map((match) => match.url).filter(isNotionHostedImageUrl))];
-  const replacements = new Map();
-  const pathnames = [];
 
-  await Promise.all(
+  return Promise.all(
     sourceUrls.map(async (sourceUrl) => {
       const downloaded = await downloadRemoteImage(sourceUrl);
       const compressed = await compressImage(downloaded.buffer, downloaded.contentType, sourceUrl);
-      const pathname = buildImageBlobPath(postSlug, compressed.buffer, compressed.extension);
-      const uploaded = await putPublicBlob(pathname, compressed.buffer, compressed.contentType);
 
-      replacements.set(sourceUrl, uploaded.url);
-      pathnames.push(pathname);
+      return {
+        sourceUrl,
+        pathname: buildImageBlobPath(postSlug, compressed.buffer, compressed.extension),
+        body: compressed.buffer,
+        contentType: compressed.contentType,
+      };
     }),
   );
+}
+
+export async function commitMarkdownImageAssets(markdown: string, assets: PreparedImageAsset[]) {
+  const replacements = new Map<string, string>();
+  const pathnames = new Set<string>();
+
+  for (const asset of assets) {
+    const uploaded = await putPublicBlob(asset.pathname, asset.body, asset.contentType);
+    replacements.set(asset.sourceUrl, uploaded.url);
+    pathnames.add(asset.pathname);
+  }
 
   return {
     markdown: rewriteMarkdownImageUrls(markdown, replacements),
-    pathnames,
+    pathnames: [...pathnames],
   };
 }
 
-export async function cleanupPostImages(postSlug, keepPathnames = []) {
+export async function cleanupPostImages(postSlug: string, keepPathnames: string[] = []) {
   const prefix = `images/${postSlug}/`;
   const keepSet = new Set(keepPathnames);
   const blobs = await listBlobsByPrefix(prefix);
@@ -195,6 +239,6 @@ export async function cleanupPostImages(postSlug, keepPathnames = []) {
   );
 }
 
-export async function deleteAllPostImages(postSlug) {
+export async function deleteAllPostImages(postSlug: string) {
   return deleteByPrefix(`images/${postSlug}/`);
 }
