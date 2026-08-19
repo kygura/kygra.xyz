@@ -101,8 +101,13 @@ const getScrollbarColor = (bgClass: string): string => {
   return "rgba(128, 128, 128, 0.3)";
 };
 
-export const Terminal = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface TerminalProps {
+  /** Mount already open — the host lazily loads this chunk on first invocation. */
+  defaultOpen?: boolean;
+}
+
+export const Terminal = ({ defaultOpen = false }: TerminalProps = {}) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const [input, setInput] = useState("");
   const [theme, setTheme] = useState<TerminalTheme>(() => {
     const saved = localStorage.getItem("terminal-theme");

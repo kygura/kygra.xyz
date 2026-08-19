@@ -51,7 +51,7 @@ const Post = () => {
 
   if (loading) {
     return (
-      <div className="px-6 md:px-12 lg:px-16 py-16 md:py-24 max-w-3xl mx-auto animate-fade-in">
+      <div className="page-shell page-shell--narrow animate-fade-in">
         <div className="border-2 border-dashed border-foreground/30 px-6 py-8 text-sm uppercase tracking-[0.2em] text-muted-foreground">
           Loading post...
         </div>
@@ -61,7 +61,7 @@ const Post = () => {
 
   if (error) {
     return (
-      <div className="px-6 md:px-12 lg:px-16 py-16 md:py-24 max-w-3xl mx-auto animate-fade-in">
+      <div className="page-shell page-shell--narrow animate-fade-in">
         <div className="border-2 border-destructive px-6 py-8 text-sm uppercase tracking-[0.2em] text-destructive">
           {error}
         </div>
@@ -79,7 +79,7 @@ const Post = () => {
   const formattedDate = formatPostDate(post.date);
 
   return (
-    <div className="px-6 md:px-12 lg:px-16 py-16 md:py-24 max-w-3xl mx-auto animate-fade-in">
+    <div className="page-shell page-shell--narrow animate-fade-in">
       <div className="mb-12 pb-6 border-b border-[var(--border-muted)] relative">
         <Link
           to="/writings"

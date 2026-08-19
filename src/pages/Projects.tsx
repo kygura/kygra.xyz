@@ -6,8 +6,8 @@ const DEFAULT_ACCENT = "var(--accent-amber)";
 
 const Projects = () => {
   return (
-    <div className="px-6 md:px-12 lg:px-16 py-16 max-w-[1000px] mx-auto animate-fade-in">
-      <div className="mb-16 pb-8 border-b border-[var(--border-muted)] relative">
+    <div className="page-shell page-shell--wide animate-fade-in">
+      <div className="mb-10 sm:mb-16 pb-6 sm:pb-8 border-b border-[var(--border-muted)] relative">
         <p className="font-mono text-[10.5px] tracking-[0.2em] uppercase text-[var(--text-secondary)] mb-6">
           ( 02 &mdash; SOFTWARE )
         </p>
@@ -19,7 +19,7 @@ const Projects = () => {
         </p>
       </div>
 
-      <div className="space-y-16">
+      <div className="space-y-10 sm:space-y-16">
         {projects.map((project, index) => {
           const githubUrl = project.links.find((link) => link.label === "GitHub")?.href;
           const deployment = project.links.find((link) => link.label === "Live demo")?.href;
@@ -27,7 +27,7 @@ const Projects = () => {
           return (
           <article
             key={project.slug}
-            className="project-entry relative group border-b-2 border-dashed border-muted pb-12 last:border-0"
+            className="project-entry relative group border-b-2 border-dashed border-muted pb-8 sm:pb-12 last:border-0"
             style={{
               "--project-accent": project.accent ?? DEFAULT_ACCENT,
               animationDelay: `${index * 100}ms`,

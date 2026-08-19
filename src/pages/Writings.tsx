@@ -30,8 +30,8 @@ const Writings = () => {
     : posts;
 
   return (
-    <div className="px-6 md:px-12 lg:px-16 py-16 max-w-[1000px] mx-auto animate-fade-in">
-      <div className="mb-16 pb-8 border-b border-[var(--border-muted)] relative">
+    <div className="page-shell page-shell--wide animate-fade-in">
+      <div className="mb-10 sm:mb-16 pb-6 sm:pb-8 border-b border-[var(--border-muted)] relative">
         <p className="font-mono text-[10.5px] tracking-[0.2em] uppercase text-[var(--text-secondary)] mb-6">
           ( 01 &mdash; WRITINGS )
         </p>
@@ -41,7 +41,7 @@ const Writings = () => {
         </p>
       </div>
 
-      <div className="mb-16 flex flex-wrap gap-3">
+      <div className="mb-10 sm:mb-16 flex flex-wrap gap-2 sm:gap-3">
         <button
           onClick={() => setSelectedTag(null)}
           className={`font-mono text-[11px] tracking-[0.16em] px-3 py-1 border transition-colors uppercase ${
@@ -79,14 +79,14 @@ const Writings = () => {
         </div>
       )}
 
-      <div className="space-y-16">
+      <div className="space-y-10 sm:space-y-16">
         {filteredPosts.map((post, index) => {
           const formattedDate = formatPostDate(post.date);
 
           return (
             <article
               key={post.slug}
-              className="relative group border-b-2 border-dashed border-muted pb-12 last:border-0 pl-4 transition-colors duration-300 hover:bg-accent/[0.04]"
+              className="relative group border-b-2 border-dashed border-muted pb-8 sm:pb-12 last:border-0 pl-3 sm:pl-4 transition-colors duration-300 hover:bg-accent/[0.04]"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* left border sweep */}
@@ -109,7 +109,7 @@ const Writings = () => {
                   </p>
                 </header>
 
-                <div className="mt-6 flex flex-wrap items-center gap-6 text-[0.7rem] text-muted-foreground uppercase tracking-widest font-bold">
+                <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-6 text-[0.7rem] text-muted-foreground uppercase tracking-widest font-bold">
                   {formattedDate && (
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-foreground/50" />

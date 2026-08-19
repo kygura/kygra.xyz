@@ -18,21 +18,12 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       output: {
+        // No "radix" bucket: grouping every primitive into one chunk meant
+        // a page that used a tooltip also downloaded accordion, dialog,
+        // select and the rest. Rollup splits them per-route on its own.
         manualChunks: {
           "framer-motion": ["framer-motion"],
           "react-query": ["@tanstack/react-query"],
-          "radix": [
-            "@radix-ui/react-accordion",
-            "@radix-ui/react-alert-dialog",
-            "@radix-ui/react-dialog",
-            "@radix-ui/react-dropdown-menu",
-            "@radix-ui/react-popover",
-            "@radix-ui/react-scroll-area",
-            "@radix-ui/react-select",
-            "@radix-ui/react-tabs",
-            "@radix-ui/react-toast",
-            "@radix-ui/react-tooltip",
-          ],
         },
       },
     },
