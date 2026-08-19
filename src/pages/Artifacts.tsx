@@ -1,7 +1,7 @@
 
 const Artifacts = () => {
   return (
-    <div className="px-6 md:px-12 lg:px-16 py-12 max-w-4xl mx-auto">
+    <div className="page-shell page-shell--mid">
       <div className="prose-minimal animate-fade-in">
         <p className="font-mono text-[10.5px] tracking-[0.2em] uppercase text-[var(--text-secondary)] mb-6">
           ( 05 &mdash; ARTIFACTS )

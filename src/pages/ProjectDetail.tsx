@@ -8,7 +8,7 @@ const ProjectDetail = () => {
 
   if (!project) {
     return (
-      <div className="px-6 md:px-12 lg:px-16 py-20 max-w-[980px] mx-auto">
+      <div className="page-shell max-w-[980px]">
         <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground mb-4">
           Project not found
         </p>

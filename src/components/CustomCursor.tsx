@@ -1,14 +1,39 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 
+/**
+ * Returns true only for devices that actually have a hovering pointer.
+ * On touch there is no cursor to replace, so the whole component — three
+ * fixed layers plus two springs driven by every mouse move — stays
+ * unmounted rather than animating invisibly.
+ */
+function useHasPointer() {
+  const [hasPointer, setHasPointer] = useState(false);
+
+  useEffect(() => {
+    if (typeof window.matchMedia !== "function") return;
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const sync = () => setHasPointer(mq.matches);
+    sync();
+    mq.addEventListener?.("change", sync);
+    return () => mq.removeEventListener?.("change", sync);
+  }, []);
+
+  return hasPointer;
+}
+
 export default function CustomCursor() {
+  const hasPointer = useHasPointer();
+  return hasPointer ? <Cursor /> : null;
+}
+
+function Cursor() {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   const ringX = useSpring(cursorX, { stiffness: 180, damping: 22 });
   const ringY = useSpring(cursorY, { stiffness: 180, damping: 22 });
   const [isHovering, setIsHovering] = useState(false);
   const [accentColor, setAccentColor] = useState<string>("var(--accent-amber)");
-  const isTouchRef = useRef(false);
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -40,9 +65,6 @@ export default function CustomCursor() {
     document.addEventListener("mouseover", onEnter, { passive: true });
     document.addEventListener("mouseout", onLeave, { passive: true });
 
-    const touchDetect = () => { isTouchRef.current = true; };
-    window.addEventListener("touchstart", touchDetect, { once: true });
-
     return () => {
       window.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseover", onEnter);
@@ -52,10 +74,14 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Dot — always visible, shrinks slightly on hover */}
+      {/* Dot — always visible, shrinks slightly on hover.
+          Painted in the theme's ink rather than mix-blend-difference:
+          a blended fixed layer forces the browser to re-blend against the
+          page backdrop, which defeats layer isolation for the animating
+          hero canvas underneath. */}
       <motion.div
         style={{ x: cursorX, y: cursorY }}
-        className="fixed top-0 left-0 z-[99999] pointer-events-none mix-blend-difference"
+        className="fixed top-0 left-0 z-[99999] pointer-events-none"
         animate={{
           width: isHovering ? 6 : 8,
           height: isHovering ? 6 : 8,
@@ -68,7 +94,7 @@ export default function CustomCursor() {
           style={{
             width: "100%",
             height: "100%",
-            background: "white",
+            background: "var(--text-primary)",
           }}
         />
       </motion.div>

@@ -65,9 +65,9 @@ const Footer = () => {
         }}
       />
 
-      <div className="relative w-full max-w-4xl mx-auto py-6 sm:py-8 md:py-10 px-4 sm:px-6 flex items-center justify-center">
+      <div className="relative w-full max-w-4xl mx-auto py-7 sm:py-8 md:py-10 px-3 sm:px-6 flex items-center justify-center">
         {/* Left */}
-        <div className="absolute left-2 sm:left-6 z-10 flex flex-col items-center gap-1 sm:gap-2">
+        <div className="absolute left-0 sm:left-6 z-10 flex flex-col items-center gap-1 sm:gap-2">
           <button
             onClick={hasPrev ? handlePrev : undefined}
             disabled={!hasPrev}
@@ -93,7 +93,7 @@ const Footer = () => {
             aria-hidden="true"
           >
             <p
-              className="font-serif font-normal text-lg sm:text-xl md:text-2xl tracking-[0.04em] leading-relaxed max-w-3xl break-words px-4 text-center"
+              className="font-serif font-normal text-base sm:text-xl md:text-2xl tracking-[0.04em] leading-relaxed max-w-3xl break-words px-1 sm:px-4 text-center"
               style={{ fontStyle: "italic" }}
             >
               {longestQuote.map((line, i) => (
@@ -103,7 +103,7 @@ const Footer = () => {
                       i === 0 && longestQuote.length > 1
                         ? "mb-4"
                         : i > 0
-                          ? "text-muted-foreground font-light text-base sm:text-lg md:text-xl"
+                          ? "text-muted-foreground font-light text-sm sm:text-lg md:text-xl"
                           : ""
                     }`}
                 >
@@ -126,7 +126,7 @@ const Footer = () => {
               className="absolute inset-0 w-full flex flex-col items-center justify-center"
             >
               <p
-                className="font-serif font-normal text-lg sm:text-xl md:text-2xl text-foreground tracking-[0.04em] leading-relaxed max-w-3xl break-words px-4 text-center"
+                className="font-serif font-normal text-base sm:text-xl md:text-2xl text-foreground tracking-[0.04em] leading-relaxed max-w-3xl break-words px-1 sm:px-4 text-center"
                 style={{ fontStyle: "italic" }}
               >
                 {lines.map((line, i) => (
@@ -136,7 +136,7 @@ const Footer = () => {
                       i === 0 && lines.length > 1
                         ? "mb-4"
                         : i > 0
-                          ? "text-muted-foreground font-light text-base sm:text-lg md:text-xl"
+                          ? "text-muted-foreground font-light text-sm sm:text-lg md:text-xl"
                           : ""
                     }`}
                   >
@@ -149,7 +149,7 @@ const Footer = () => {
         </div>
 
         {/* Right */}
-        <div className="absolute right-2 sm:right-6 z-10 flex flex-col items-center gap-1 sm:gap-2">
+        <div className="absolute right-0 sm:right-6 z-10 flex flex-col items-center gap-1 sm:gap-2">
           <button
             onClick={hasNext ? handleNext : undefined}
             disabled={!hasNext}
@@ -168,7 +168,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="pb-3 text-center font-mono text-[0.6rem] tracking-widest text-muted-foreground opacity-40 uppercase">
+      <div className="px-4 pb-4 sm:pb-3 text-center font-mono text-[0.6rem] tracking-widest text-muted-foreground opacity-40 uppercase">
         Today is {new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })} | {currentQuote.index + 1} / {QUOTES_ARRAY.length}
       </div>
     </footer>
